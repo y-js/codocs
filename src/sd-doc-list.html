@@ -1,0 +1,84 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="sd-doc-list">
+  <script>
+    Polymer({
+      _sharedToObject: function (m) {
+        return {
+          title: m.get('title'),
+          content: m.get('content')
+        }
+      },
+      created: function () {
+        var token = true
+        this.mutualExcluse = function mutualExcluse (f) {
+          if (token) {
+            token = false
+            try {
+              f()
+            } catch (e) {
+              token = true
+              throw new Error(e)
+            }
+            token = true
+          }
+        }
+        var self = this
+        Y({
+          db: {
+            name: 'memory'
+          },
+          connector: {
+            name: 'websockets-client',
+            url: 'http://127.0.0.1:1234',
+            room: 'doc-list'
+          },
+          share: {
+            list: 'Array'
+          }
+        }).then(function (y) {
+          window.y = y // TODO: remove!
+          window.sd = self // TODO: remove too!
+          self._y = y
+          self._shared = y.share.list
+          // save the current state of list
+          self.data = y.share.list.toArray().map(this._sharedToObject)
+          if (initialValue.length > 0) {
+            self.mutualExcluse(function () {
+              self.splice.apply(self, ['data', 0, 0].concat(initialValue))
+            })
+          }
+          // self.data and self._shared should be synced now
+          // observe _shared changes
+          self._shared.observe(function (event) {
+            self.mutualExcluse(function () {
+              if (event.type === 'delete') {
+                self.splice('data', event.index, event.length)
+              } else {
+                self.splice.apply(self, ['data', event.index, 0].concat(event.values.map(this._sharedToObject)))
+              }
+            })
+          })
+        })
+      },
+      is: 'sd-doc-list',
+      properties: {
+        data: {
+          type: Array,
+          notify: true,
+          readOnly: true
+        }
+      },
+      addDoc: function () {
+        this._shared.insert(0, [Y.Map])
+        var doc = this._shared.get(0)
+        doc.set('title', Y.Text).insert(0, 'Title')
+        doc.set('content', Y.Richtext).insert(0, 'Content..')
+        return doc
+      },
+      getDoc: function (i) {
+        return this._shared.get(i)
+      }
+    });
+  </script>
+</dom-module>
