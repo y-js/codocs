@@ -7,7 +7,7 @@
   "dependencies": {
     "app-layout": "PolymerElements/app-layout#^0.10.0",
     "app-route": "PolymerElements/app-route#^0.9.0",
-    "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.3.1",
     "iron-icon": "PolymerElements/iron-icon#^1.0.0",
     "iron-iconset-svg": "PolymerElements/iron-iconset-svg#^1.0.0",
     "iron-localstorage": "PolymerElements/iron-localstorage#^1.0.0",
@@ -23,7 +23,9 @@
     "y-richtext": "^9.0.1",
     "y-text": "^9.0.2",
     "y-map": "^10.0.1",
-    "paper-card": "PolymerElements/paper-card#^1.1.2"
+    "paper-card": "PolymerElements/paper-card#^1.1.2",
+    "iron-icons": "PolymerElements/iron-icons#^1.1.3",
+    "paper-button": "PolymerElements/paper-button#^1.0.13"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
