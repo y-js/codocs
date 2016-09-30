@@ -1,0 +1,56 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="sd-doc-card">
+  <template>
+    <style include="shared-styles iron-flex iron-flex-alignment">
+      paper-card {
+        margin-bottom: 20px;
+        width: 100%;
+      }
+      .doc-icon {
+        --iron-icon-width: 42px;
+        --iron-icon-height: 42px;
+        margin: 8px;
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+      .headline {
+        @apply(--paper-font-headline);
+        font-weight: 400;
+        font-size: 24px;
+        font-family: 'Roboto', 'Noto', sans-serif;
+        letter-spacing: -.012em;
+        line-height: 32px;
+        padding-right: 30px;
+      }
+      .description {
+        color: var(--paper-grey-600); margin: 10px 0;
+      }
+      .card-actions {
+        @apply(--layout-horizontal);
+      }
+    </style>
+    <paper-card>
+      <div>
+        <div class="card-content">
+          <div class="headline" contenteditable="true">This is my headline</div>
+          <div class="description" contenteditable="true">Mac Miller ~ Okt. 17 2017</div>
+        </div>
+        <div class="card-actions">
+          <paper-button class="flex"><iron-icon icon="image:remove-red-eye"></iron-icon>Read</paper-button>
+          <paper-button class="flex"><iron-icon icon="editor:mode-edit"></iron-icon>Edit</paper-button>
+          <paper-button class="flex"><iron-icon icon="social:share"></iron-icon>Share</paper-button>
+        </div>
+      </div>
+      <!--iron-icon class="doc-icon" icon="icons:description"></iron-icon-->
+    </paper-card>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'sd-doc-card'
+    });
+  </script>
+</dom-module>

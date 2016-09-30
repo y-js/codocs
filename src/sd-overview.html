@@ -1,0 +1,49 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="sd-overview">
+  <template>
+    <style include="shared-styles iron-flex iron-flex-alignment">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+      sd-doc-card {
+        margin-left: 5px;
+        margin-right: 5px;
+        width: 100%;
+      }
+      @media (min-width: 660px) {
+        sd-doc-card {
+          width: 47%;
+        }
+      }
+      @media (min-width: 1000px) {
+        sd-doc-card {
+          width: 32%;
+        }
+      }
+    </style>
+    <div class="layout horizontal wrap">
+      <sd-doc-card></sd-doc-card>
+      <sd-doc-card></sd-doc-card>
+      <sd-doc-card></sd-doc-card>
+      <sd-doc-card></sd-doc-card>
+      <sd-doc-card></sd-doc-card>
+      <sd-doc-card></sd-doc-card>
+      <sd-doc-card></sd-doc-card>
+      <sd-doc-card></sd-doc-card>
+      <sd-doc-card></sd-doc-card>
+      <sd-doc-card></sd-doc-card>
+      <sd-doc-card></sd-doc-card>
+      <sd-doc-card></sd-doc-card>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'sd-overview'
+    });
+  </script>
+</dom-module>
