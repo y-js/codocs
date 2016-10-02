@@ -1,0 +1,29 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="sd-doc-title">
+  <template>
+    <style include="shared-styles iron-flex iron-flex-alignment">
+      :host {
+        display: block;
+      }
+      .doc-title {
+        height: 200px;
+        width: 100%;
+        --quill-editor: {
+          font-size: xx-large;
+          font-weight: 600;
+          font-family: 'Roboto', 'Noto', sans-serif;
+        }
+      }
+
+    </style>
+    <quill-element class="card-content doc-title" theme="bubble" placeholder="Type the title of your document" toolbar='[["link", "image", "video", {"color": []}]]'></quill-element>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'sd-doc-title'
+    });
+  </script>
+</dom-module>

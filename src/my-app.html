@@ -20,6 +20,8 @@
 <link rel="import" href="my-icons.html">
 <link rel="import" href="sd-overview.html">
 <link rel="import" href="sd-doc-card.html">
+<link rel="import" href="sd-doc-title.html">
+<link rel="import" href="sd-doc-view.html">
 
 
 
@@ -65,7 +67,7 @@
     <app-location route="{{route}}"></app-location>
     <app-route
         route="{{route}}"
-        pattern="/:page"
+        pattern="/:docid"
         data="{{routeData}}"
         tail="{{subroute}}"></app-route>
 
@@ -91,7 +93,10 @@
           </app-toolbar>
         </app-header>
 
-        <sd-overview></sd-overview>
+        <iron-pages selected="{{page}}" attr-for-selected="location">
+          <sd-overview location="overview"></sd-overview>
+          <sd-doc-view location="view"></sd-doc-view>
+        </iron-pages>
       </app-header-layout>
     </app-drawer-layout>
   </template>
@@ -101,30 +106,28 @@
       is: 'my-app',
 
       properties: {
+        docid: {
+          type: String,
+          notify: true
+        },
         page: {
           type: String,
-          reflectToAttribute: true,
-          observer: '_pageChanged'
+          notify: true
         }
       },
 
       observers: [
-        '_routePageChanged(routeData.page)'
+        '_routePageChanged(routeData.docid)'
       ],
 
-      _routePageChanged: function(page) {
-        this.page = page || 'view1';
-      },
-
-      _pageChanged: function(page) {
-        // Load page import on demand. Show 404 page if fails
-        var resolvedPageUrl = this.resolveUrl('my-' + page + '.html');
-        this.importHref(resolvedPageUrl, null, this._showPage404, true);
-      },
-
-      _showPage404: function() {
-        this.page = 'view404';
+      _routePageChanged: function(id) {
+        if (id === "") {
+          this.page = 'overview'
+        } else {
+          this.docid = id
+          this.page = 'view'
+        }
       }
-    });
+    })
   </script>
 </dom-module>

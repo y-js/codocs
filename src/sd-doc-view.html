@@ -1,0 +1,56 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="sd-doc-view">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+        width: 100%;
+      }
+      .view-container {
+        width: 100%;
+        display: block;
+      }
+      .doc-content {
+        min-height: 600px;
+        --quill-toolbar: {
+          text-align: center;
+          border-left: none;
+          border-right: none;
+        }
+        --quill-editor-container: {
+          border: none;
+        }
+      }
+      @media (min-width: 660px) {
+        .view-container {
+          max-width: 660px;
+          margin: auto;
+        }
+      }
+      @media (min-width: 1000px) {
+        .view-container {
+          max-width: 870px;
+          margin: auto;
+        }
+        .doc-content {
+          --quill-editor: {
+            width: 660px;
+            margin: auto;
+          }
+        }
+      }
+    </style>
+    <paper-card class="view-container">
+      <sd-doc-title></sd-doc-title>
+      <quill-element class="doc-content" placeholder="Your content!"></quill-element>
+    </paper-card>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'sd-doc-view'
+    });
+  </script>
+</dom-module>

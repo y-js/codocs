@@ -31,18 +31,10 @@
       .card-actions {
         @apply(--layout-horizontal);
       }
-      quill-element {
-        height: 200px;
-        --quill-editor: {
-          font-size: xx-large;
-          font-weight: 600;
-          font-family: 'Roboto', 'Noto', sans-serif;
-        }
-      }
     </style>
     <paper-card>
       <div>
-        <quill-element class="card-content" theme="bubble" placeholder="Type the title of your document" toolbar='[["link", "image", "video", {"color": []}]]'></quill-element>
+        <sd-doc-title class="card-content"></sd-doc-title>
         <div class="card-actions">
           <paper-button class="flex"><iron-icon icon="image:remove-red-eye"></iron-icon>Read</paper-button>
           <paper-button class="flex"><iron-icon icon="editor:mode-edit"></iron-icon>Edit</paper-button>
