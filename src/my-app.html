@@ -16,6 +16,11 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 
 <link rel="import" href="../bower_components/quill-element/quill-element.html">
+<link rel="import" href="../bower_components/y-element/y-element.html">
+<script src="../bower_components/y-memory/y-memory.js"></script>
+<script src="../bower_components/y-websockets-client/y-websockets-client.js"></script>
+<script src="../bower_components/y-richtext/y-richtext.js"></script>
+
 
 <link rel="import" href="my-icons.html">
 <link rel="import" href="sd-overview.html">
@@ -64,10 +69,10 @@
         font-weight: bold;
       }
     </style>
-    <app-location route="{{route}}"></app-location>
+    <app-location route="{{route}}" use-hash-as-path></app-location>
     <app-route
         route="{{route}}"
-        pattern="/:docid"
+        pattern=":docid"
         data="{{routeData}}"
         tail="{{subroute}}"></app-route>
 
@@ -115,17 +120,15 @@
           notify: true
         }
       },
-
       observers: [
         '_routePageChanged(routeData.docid)'
       ],
-
       _routePageChanged: function(id) {
-        if (id === "") {
-          this.page = 'overview'
-        } else {
+        if (id) {
           this.docid = id
           this.page = 'view'
+        } else {
+          this.page = 'overview'
         }
       }
     })

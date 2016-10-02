@@ -18,12 +18,18 @@
       }
 
     </style>
-    <quill-element class="card-content doc-title" theme="bubble" placeholder="Type the title of your document" toolbar='[["link", "image", "video", {"color": []}]]'></quill-element>
+    <quill-element y-richtext="{{yRichtext}}" class="card-content doc-title" theme="bubble" placeholder="Type the title of your document" toolbar='[["link", "image", "video", {"color": []}]]'></quill-element>
   </template>
 
   <script>
     Polymer({
-      is: 'sd-doc-title'
+      is: 'sd-doc-title',
+      properties: {
+        yRichtext: {
+          type: Object,
+          notify: true
+        }
+      }
     });
   </script>
 </dom-module>

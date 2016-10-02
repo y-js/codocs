@@ -5,7 +5,6 @@
   <template>
     <style include="shared-styles iron-flex iron-flex-alignment">
       paper-card {
-        margin-bottom: 20px;
         width: 100%;
       }
       .doc-icon {
@@ -34,11 +33,11 @@
     </style>
     <paper-card>
       <div>
-        <sd-doc-title class="card-content"></sd-doc-title>
+        <sd-doc-title class="card-content" y-richtext={{doc.title}}></sd-doc-title>
         <div class="card-actions">
-          <paper-button class="flex"><iron-icon icon="image:remove-red-eye"></iron-icon>Read</paper-button>
-          <paper-button class="flex"><iron-icon icon="editor:mode-edit"></iron-icon>Edit</paper-button>
-          <paper-button class="flex"><iron-icon icon="social:share"></iron-icon>Share</paper-button>
+          <paper-button class="flex" on-tap="openView"><iron-icon icon="editor:mode-edit"></iron-icon>Edit</paper-button>
+          <paper-button class="flex" on-tap="openShareTooltip"><iron-icon icon="social:share"></iron-icon>Share</paper-button>
+          <paper-button class="flex" on-tap="delete"><iron-icon icon="icons:delete"></iron-icon>Delete</paper-button>
         </div>
       </div>
       <!--iron-icon class="doc-icon" icon="icons:description"></iron-icon-->
@@ -47,7 +46,32 @@
 
   <script>
     Polymer({
-      is: 'sd-doc-card'
+      is: 'sd-doc-card',
+      properties: {
+        doc: {
+          type: Object,
+          notify: true
+        }
+      },
+      openView: function () {
+        window.location = '#utdriaen'
+        console.log('Oven view')
+      },
+      openShareTooltip: function () {
+        console.log('open share tooltip')
+      },
+      delete: function (nativeEvent) {
+        var parent = this.parentNode
+        var index = null
+        for(var i = 0; i < parent.children.length; i++) {
+          if (parent.children[i] === this) {
+            index = i
+            break
+          }
+        }
+        this.fire('delete-doc', {index: index})
+      }
+
     });
   </script>
 </dom-module>
