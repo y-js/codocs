@@ -43,14 +43,34 @@
       }
     </style>
     <paper-card class="view-container">
-      <sd-doc-title></sd-doc-title>
-      <quill-element class="doc-content" placeholder="Your content!"></quill-element>
+      <y-element connector-name="websockets-client" connector-room="{{id}}" db-name="memory">
+        <y-type type="Richtext" name="title" data="{{title}}"></y-type>
+        <y-type type="Richtext" name="content" data="{{content}}"></y-type>
+      </y-element>
+      <sd-doc-title y-richtext="{{title}}"></sd-doc-title>
+      <quill-element y-richtext="{{content}}" class="doc-content" placeholder="Your content!"></quill-element>
     </paper-card>
   </template>
 
   <script>
     Polymer({
-      is: 'sd-doc-view'
+      is: 'sd-doc-view',
+      properties: {
+        id: {
+          type: String,
+          notify: true,
+          observer: '_idChanged'
+        }
+      },
+      _idChanged: function () {
+        if (this.title == null) {
+          return
+        }
+        this.title.type.unbindQuillAll()
+        this.content.type.unbindQuillAll()
+        this.querySelector('sd-doc-title').clear()
+        this.querySelector('quill-element').setText('')
+      }
     });
   </script>
 </dom-module>

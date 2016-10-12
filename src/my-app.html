@@ -28,8 +28,6 @@
 <link rel="import" href="sd-doc-title.html">
 <link rel="import" href="sd-doc-view.html">
 
-
-
 <dom-module id="my-app">
   <template>
     <style>
@@ -74,7 +72,8 @@
         route="{{route}}"
         pattern=":docid"
         data="{{routeData}}"
-        tail="{{subroute}}"></app-route>
+        tail="{{subroute}}"
+        active="{{docRouteActive}}"></app-route>
 
     <app-drawer-layout fullbleed>
       <!-- Drawer content -->
@@ -100,7 +99,7 @@
 
         <iron-pages selected="{{page}}" attr-for-selected="location">
           <sd-overview location="overview"></sd-overview>
-          <sd-doc-view location="view"></sd-doc-view>
+          <sd-doc-view location="view" id="{{routeData.docid}}"></sd-doc-view>
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>
@@ -118,13 +117,19 @@
         page: {
           type: String,
           notify: true
+        },
+        docRouteActive: {
+          type: Boolean,
+          notify: true,
+          observer: '_routePageChanged'
         }
       },
       observers: [
         '_routePageChanged(routeData.docid)'
       ],
-      _routePageChanged: function(id) {
-        if (id) {
+      _routePageChanged: function () {
+        var id = this.routeData == null ? false : this.routeData.docid
+        if (id && this.docRouteActive) {
           this.docid = id
           this.page = 'view'
         } else {

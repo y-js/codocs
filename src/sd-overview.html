@@ -56,7 +56,14 @@
     Polymer({
       is: 'sd-overview',
       addDoc: function () {
-        this.push('docs', { title: Y.Richtext})
+        function generateNewRoomId (len) {
+          var arr = new Uint8Array((len || 40) / 2)
+          window.crypto.getRandomValues(arr)
+          return Array.from(arr).map(function (dec) {
+            return dec.toString(16)
+          }).join('')
+        }
+        this.unshift('docs', { type: 'richtext', id: generateNewRoomId() })
       },
       deleteDoc: function (nativeEvent, event) {
         this.splice('docs', event.index - 1, 1) // -1 for the addDoc card

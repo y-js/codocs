@@ -1,5 +1,5 @@
 {
-  "name": "polymer-starter-kit",
+  "name": "simple-docs",
   "authors": [
     "The Polymer Authors"
   ],
@@ -22,7 +22,8 @@
     "quill-element": "^0.0.3",
     "y-richtext": "^9.0.1",
     "y-memory": "^8.0.7",
-    "y-websockets-client": "^8.0.11"
+    "y-websockets-client": "^8.0.11",
+    "quill": "https://github.com/quilljs/quill/releases/download/v1.0.6/quill.tar.gz"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

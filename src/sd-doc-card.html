@@ -30,12 +30,19 @@
       .card-actions {
         @apply(--layout-horizontal);
       }
+      .card-actions a {
+        text-decoration: none;
+        color: inherit;
+      }
     </style>
     <paper-card>
       <div>
-        <sd-doc-title class="card-content" y-richtext={{doc.title}}></sd-doc-title>
+        <y-element connector-name="websockets-client" connector-room="{{doc.id}}" db-name="memory">
+          <y-type type="Richtext" name="title" data="{{title}}"></y-type>
+        </y-element>
+        <sd-doc-title class="card-content" y-richtext={{title}}></sd-doc-title>
         <div class="card-actions">
-          <paper-button class="flex" on-tap="openView"><iron-icon icon="editor:mode-edit"></iron-icon>Edit</paper-button>
+          <a href="#{{doc.id}}"><paper-button class="flex"><iron-icon icon="editor:mode-edit"></iron-icon>Edit</paper-button></a>
           <paper-button class="flex" on-tap="openShareTooltip"><iron-icon icon="social:share"></iron-icon>Share</paper-button>
           <paper-button class="flex" on-tap="delete"><iron-icon icon="icons:delete"></iron-icon>Delete</paper-button>
         </div>
@@ -52,10 +59,6 @@
           type: Object,
           notify: true
         }
-      },
-      openView: function () {
-        window.location = '#utdriaen'
-        console.log('Oven view')
       },
       openShareTooltip: function () {
         console.log('open share tooltip')

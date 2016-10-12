@@ -8,17 +8,17 @@
         display: block;
       }
       .doc-title {
-        height: 200px;
+        height: 235px;
         width: 100%;
         --quill-editor: {
           font-size: xx-large;
           font-weight: 600;
           font-family: 'Roboto', 'Noto', sans-serif;
+          text-align: center
         }
       }
-
     </style>
-    <quill-element y-richtext="{{yRichtext}}" class="card-content doc-title" theme="bubble" placeholder="Type the title of your document" toolbar='[["link", "image", "video", {"color": []}]]'></quill-element>
+    <quill-element disabled="{{disabled}}" y-richtext="{{yRichtext}}" class="card-content doc-title" theme="bubble" placeholder="Title" toolbar='[["link", "image", "video", {"color": []}]]'></quill-element>
   </template>
 
   <script>
@@ -28,7 +28,14 @@
         yRichtext: {
           type: Object,
           notify: true
+        },
+        disabled: {
+          type: Boolean,
+          notify: true
         }
+      },
+      clear: function () {
+        this.querySelector('quill-element').setText('')
       }
     });
   </script>
