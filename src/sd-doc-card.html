@@ -37,12 +37,12 @@
     </style>
     <paper-card>
       <div>
-        <y-element connector-name="websockets-client" connector-room="{{doc.id}}" db-name="memory">
+        <y-element connector-name="websockets-client" connector-room="{{getRoomName(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="memory" connector-url="localhost:1234">
           <y-type type="Richtext" name="title" data="{{title}}"></y-type>
         </y-element>
         <sd-doc-title class="card-content" y-richtext={{title}}></sd-doc-title>
         <div class="card-actions">
-          <a href="#{{doc.id}}"><paper-button class="flex"><iron-icon icon="editor:mode-edit"></iron-icon>Edit</paper-button></a>
+          <a class="flex" href="#"><paper-button><iron-icon icon="editor:mode-edit"></iron-icon>Edit</paper-button></a>
           <paper-button class="flex" on-tap="openShareTooltip"><iron-icon icon="social:share"></iron-icon>Share</paper-button>
           <paper-button class="flex" on-tap="delete"><iron-icon icon="icons:delete"></iron-icon>Delete</paper-button>
         </div>
@@ -54,6 +54,7 @@
   <script>
     Polymer({
       is: 'sd-doc-card',
+      behaviors: [AppBehaviors.RoomIdentity],
       properties: {
         doc: {
           type: Object,
@@ -74,7 +75,6 @@
         }
         this.fire('delete-doc', {index: index})
       }
-
     });
   </script>
 </dom-module>

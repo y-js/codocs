@@ -23,7 +23,8 @@
     "y-richtext": "^9.0.1",
     "y-memory": "^8.0.7",
     "y-websockets-client": "^8.0.11",
-    "quill": "https://github.com/quilljs/quill/releases/download/v1.0.6/quill.tar.gz"
+    "quill": "https://github.com/quilljs/quill/releases/download/v1.0.6/quill.tar.gz",
+    "js-md5": "md5#^0.4.1"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

@@ -14,13 +14,16 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/google-signin/google-signin.html">
 
 <link rel="import" href="../bower_components/quill-element/quill-element.html">
 <link rel="import" href="../bower_components/y-element/y-element.html">
 <script src="../bower_components/y-memory/y-memory.js"></script>
 <script src="../bower_components/y-websockets-client/y-websockets-client.js"></script>
 <script src="../bower_components/y-richtext/y-richtext.js"></script>
+<script src="../bower_components/js-md5/build/md5.min.js"></script>
 
+<script src="./behaviors.js"></script>
 
 <link rel="import" href="my-icons.html">
 <link rel="import" href="sd-overview.html">
@@ -93,12 +96,19 @@
           <app-toolbar>
             <paper-icon-button icon="menu"></paper-icon-button>
             <div main-title>Simple Docs</div>
-            <paper-icon-button icon="icons:account-circle"></paper-icon-button>
+            <google-signin
+              on-google-signin-success="googleSignin"
+              on-google-signed-out="googleSignout"
+              is-authorized="{{isAuthorized}}"
+              openid-prompt="select_account"
+              on-tap="signinTapped"
+              client-id="863221146052-4h694v1mmn93991iq8vm9ub8tap3h7ve.apps.googleusercontent.com"></google-signin>
           </app-toolbar>
         </app-header>
 
         <iron-pages selected="{{page}}" attr-for-selected="location">
-          <sd-overview location="overview"></sd-overview>
+          <div location="home"><h1>Home</h1></div>
+          <sd-overview id="overview" location="overview"></sd-overview>
           <sd-doc-view location="view" id="{{routeData.docid}}"></sd-doc-view>
         </iron-pages>
       </app-header-layout>
@@ -121,20 +131,36 @@
         docRouteActive: {
           type: Boolean,
           notify: true,
-          observer: '_routePageChanged'
+          observer: '_updatePage'
+        },
+        isAuthorized: {
+          type: Boolean,
+          observer: '_updatePage'
         }
       },
       observers: [
-        '_routePageChanged(routeData.docid)'
+        '_updatePage(routeData.docid)'
       ],
-      _routePageChanged: function () {
+      _updatePage: function () {
         var id = this.routeData == null ? false : this.routeData.docid
         if (id && this.docRouteActive) {
           this.docid = id
           this.page = 'view'
         } else {
-          this.page = 'overview'
+          if (this.isAuthorized) {
+            this.page = 'overview'
+          } else {
+            this.page = 'home'
+          }
         }
+      },
+      googleSignin: function () {
+        var q = gapi.auth2.getAuthInstance().currentUser.get()
+        var idToken = q.getAuthResponse().id_token
+        var userId = q.getId()
+        this.$.overview.setGoogleIdToken(idToken, userId)
+      },
+      googleSignout: function () {
       }
     })
   </script>

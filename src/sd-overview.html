@@ -6,7 +6,6 @@
     <style include="shared-styles iron-flex iron-flex-alignment">
       :host {
         display: block;
-
         padding: 10px;
       }
       .doc-card {
@@ -39,7 +38,7 @@
         margin: -30px 0 0 -30px;
       }
     </style>
-    <y-element connector-name="websockets-client" connector-room="easy-docs-testing" db-name="memory">
+    <y-element connector-name="websockets-client" db-name="memory" connector-auth="{{connectorAuth}}" connector-url="localhost:1234" connector-debug connector-room="{{connectorRoom}}">
       <y-array name="docs" data="{{docs}}"></y-array>
     </y-element>
     <div class="layout horizontal wrap">
@@ -56,14 +55,14 @@
     Polymer({
       is: 'sd-overview',
       addDoc: function () {
-        function generateNewRoomId (len) {
-          var arr = new Uint8Array((len || 40) / 2)
-          window.crypto.getRandomValues(arr)
-          return Array.from(arr).map(function (dec) {
-            return dec.toString(16)
-          }).join('')
-        }
-        this.unshift('docs', { type: 'richtext', id: generateNewRoomId() })
+        // generate a room name
+        var arr = new Uint8Array(20)
+        window.crypto.getRandomValues(arr)
+        var roomSecret = Array.from(arr).map(function (dec) {
+          return dec.toString(16)
+        }).join('')
+        var roomId = md5(roomSecret)
+        this.unshift('docs', { type: 'richtext', roomId: roomId, secret: roomSecret })
       },
       deleteDoc: function (nativeEvent, event) {
         this.splice('docs', event.index - 1, 1) // -1 for the addDoc card
@@ -72,7 +71,12 @@
         docs: {
           type: Array,
           notify: true
-        }
+        },
+        connectorRoom: String
+      },
+      setGoogleIdToken: function (idToken, roomId) {
+        this.connectorAuth = idToken
+        this.connectorRoom = btoa(JSON.stringify({ type: 'overview', roomId: roomId}))
       }
     });
   </script>

@@ -43,7 +43,7 @@
       }
     </style>
     <paper-card class="view-container">
-      <y-element connector-name="websockets-client" connector-room="{{id}}" db-name="memory">
+      <y-element connector-name="websockets-client" connector-room="{{id}}" connector-auth="{{roomSecret}}" db-name="memory" connector-url="localhost:1234">
         <y-type type="Richtext" name="title" data="{{title}}"></y-type>
         <y-type type="Richtext" name="content" data="{{content}}"></y-type>
       </y-element>
@@ -55,8 +55,14 @@
   <script>
     Polymer({
       is: 'sd-doc-view',
+      behaviors: [AppBehaviors.RoomIdentity],
       properties: {
         id: {
+          type: String,
+          notify: true,
+          observer: '_idChanged'
+        },
+        roomSecret: {
           type: String,
           notify: true,
           observer: '_idChanged'
