@@ -140,7 +140,7 @@ io.on('connection', function (socket) {
     }
   })
   socket.on('leaveRoom', function (room) {
-    rooms[room].then(function () {
+    rooms[room].then(function (y) {
       y.connector.userLeft(socket.id)
     })
     delete rooms[room]

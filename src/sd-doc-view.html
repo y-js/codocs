@@ -43,7 +43,7 @@
       }
     </style>
     <paper-card class="view-container">
-      <y-element connector-name="websockets-client" connector-room="{{id}}" connector-auth="{{roomSecret}}" db-name="memory" connector-url="localhost:1234">
+      <y-element connector-name="websockets-client" connector-room="{{roomName}}" connector-auth="{{roomSecret}}" db-name="indexeddb" connector-url="localhost:1234">
         <y-type type="Richtext" name="title" data="{{title}}"></y-type>
         <y-type type="Richtext" name="content" data="{{content}}"></y-type>
       </y-element>
@@ -57,21 +57,21 @@
       is: 'sd-doc-view',
       behaviors: [AppBehaviors.RoomIdentity],
       properties: {
-        id: {
+        roomLink: {
           type: String,
           notify: true,
-          observer: '_idChanged'
+          observer: '_linkChanged'
         },
-        roomSecret: {
-          type: String,
-          notify: true,
-          observer: '_idChanged'
-        }
+        roomName: String,
+        roomSecret: String
       },
-      _idChanged: function () {
+      _linkChanged: function () {
         if (this.title == null) {
           return
         }
+        var p = this.parseRoomLink(this.roomLink)
+        this.roomName = p.roomName
+        this.roomSecret = p.secret
         this.title.type.unbindQuillAll()
         this.content.type.unbindQuillAll()
         this.querySelector('sd-doc-title').clear()

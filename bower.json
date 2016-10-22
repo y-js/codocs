@@ -24,7 +24,8 @@
     "y-memory": "^8.0.7",
     "y-websockets-client": "^8.0.11",
     "quill": "https://github.com/quilljs/quill/releases/download/v1.0.6/quill.tar.gz",
-    "js-md5": "md5#^0.4.1"
+    "js-md5": "md5#^0.4.1",
+    "y-indexeddb": "^8.1.4"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
