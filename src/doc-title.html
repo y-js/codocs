@@ -1,7 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="shared-styles.html">
 
-<dom-module id="sd-doc-title">
+<dom-module id="doc-title">
   <template>
     <style include="shared-styles iron-flex iron-flex-alignment">
       :host {
@@ -12,8 +12,8 @@
         width: 100%;
         --quill-editor: {
           font-size: xx-large;
-          font-weight: 600;
-          font-family: 'Roboto', 'Noto', sans-serif;
+          font-weight: 400;
+          font-family: 'Lato', sans-serif;
           text-align: center
         }
       }
@@ -23,7 +23,7 @@
 
   <script>
     Polymer({
-      is: 'sd-doc-title',
+      is: 'doc-title',
       properties: {
         yRichtext: {
           type: Object,

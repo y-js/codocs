@@ -27,16 +27,17 @@
 <script src="./behaviors.js"></script>
 
 <link rel="import" href="my-icons.html">
-<link rel="import" href="sd-overview.html">
-<link rel="import" href="sd-doc-card.html">
-<link rel="import" href="sd-doc-title.html">
-<link rel="import" href="sd-doc-view.html">
+<link rel="import" href="doc-overview.html">
+<link rel="import" href="doc-card.html">
+<link rel="import" href="doc-title.html">
+<link rel="import" href="doc-view.html">
+<link rel="import" href="codocs-logo.html">
 
 <dom-module id="my-app">
   <template>
     <style>
       :host {
-        --app-primary-color: #4285f4;
+        --app-primary-color: #007fce;
         --app-secondary-color: black;
 
         display: block;
@@ -70,6 +71,7 @@
 
         font-weight: bold;
       }
+      
     </style>
     <app-location route="{{route}}" use-hash-as-path></app-location>
     <app-route
@@ -95,8 +97,9 @@
 
         <app-header condenses reveals effects="waterfall">
           <app-toolbar>
-            <paper-icon-button icon="menu"></paper-icon-button>
-            <div main-title>Simple Docs</div>
+            <!--paper-icon-button icon="menu"></paper-icon-button-->
+            <!--div main-title>coDOCS</div-->
+           <codocs-logo main-title></codocs-logo>
             <template is="dom-if" if="{{isOnline}}">
               <google-signin
                 on-google-signin-success="googleSignin"
@@ -110,8 +113,8 @@
 
         <iron-pages selected="{{page}}" attr-for-selected="location">
           <div location="home"><h1>Home</h1></div>
-          <sd-overview id="overview" location="overview"></sd-overview>
-          <sd-doc-view location="view" room-link="{{routeData.roomLink}}"></sd-doc-view>
+          <doc-overview id="overview" location="overview"></doc-overview>
+          <doc-view location="view" room-link="{{routeData.roomLink}}"></doc-view>
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>

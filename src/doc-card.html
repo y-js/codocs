@@ -1,7 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="shared-styles.html">
 
-<dom-module id="sd-doc-card">
+<dom-module id="doc-card">
   <template>
     <style include="shared-styles iron-flex iron-flex-alignment">
       paper-card {
@@ -14,15 +14,6 @@
         position: absolute;
         right: 0;
         top: 0;
-      }
-      .headline {
-        @apply(--paper-font-headline);
-        font-weight: 400;
-        font-size: 24px;
-        font-family: 'Roboto', 'Noto', sans-serif;
-        letter-spacing: -.012em;
-        line-height: 32px;
-        padding-right: 30px;
       }
       .description {
         color: var(--paper-grey-600); margin: 10px 0;
@@ -40,7 +31,7 @@
         <y-element connector-name="websockets-client" connector-room="{{getRoomName(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="indexeddb" connector-url="localhost:1234">
           <y-type type="Richtext" name="title" data="{{title}}"></y-type>
         </y-element>
-        <sd-doc-title class="card-content" y-richtext={{title}}></sd-doc-title>
+        <doc-title class="card-content" y-richtext={{title}}></doc-title>
         <div class="card-actions">
           <a class="flex" href="#{{getRoomLink(doc.roomId, doc.secret)}}"><paper-button><iron-icon icon="editor:mode-edit"></iron-icon>Edit</paper-button></a>
           <paper-button class="flex" on-tap="openShareTooltip"><iron-icon icon="social:share"></iron-icon>Share</paper-button>
@@ -53,7 +44,7 @@
 
   <script>
     Polymer({
-      is: 'sd-doc-card',
+      is: 'doc-card',
       behaviors: [AppBehaviors.RoomIdentity],
       properties: {
         doc: {

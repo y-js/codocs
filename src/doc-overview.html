@@ -1,7 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="shared-styles.html">
 
-<dom-module id="sd-overview">
+<dom-module id="doc-overview">
   <template>
     <style include="shared-styles iron-flex iron-flex-alignment">
       :host {
@@ -46,14 +46,14 @@
         <iron-icon icon="icons:add"></iron-icon>
       </paper-card>
       <template is="dom-repeat" items="{{docs}}">
-        <sd-doc-card class="doc-card" doc="{{item}}" on-delete-doc="deleteDoc"></sd-doc-card>
+        <doc-card class="doc-card" doc="{{item}}" on-delete-doc="deleteDoc"></doc-card>
       </template>
     </div>
   </template>
 
   <script>
     Polymer({
-      is: 'sd-overview',
+      is: 'doc-overview',
       addDoc: function () {
         // generate a room name
         var arr = new Uint8Array(20)

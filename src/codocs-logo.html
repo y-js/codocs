@@ -1,0 +1,30 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700i|Open+Sans:400,400i,600,600i,700,700i" rel="stylesheet">
+
+<dom-module id="codocs-logo">
+  <template>
+    <style>
+      :host {
+        font-size: xx-large;
+        letter-spacing: .07em;
+        line-height: 1.5;
+        margin-left: .4em;
+        font-family: 'Lato', sans-serif;
+      }
+      #co {
+        font-weight: 300;
+      }
+      #docs {
+        font-weight: 700;
+        font-style: italic;
+      }
+    </style>
+    <span id="co">co</span><span id="docs">Docs</span><!--span id="co">co</span><span id="d">D</span><span id="o">o</span><span id="c">c</span><span id="s">s</span-->
+  </template>
+  <script>
+    Polymer({
+      is: 'codocs-logo'
+    })
+  </script>
+</dom-module>

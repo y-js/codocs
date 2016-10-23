@@ -1,7 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="shared-styles.html">
 
-<dom-module id="sd-doc-view">
+<dom-module id="doc-view">
   <template>
     <style include="shared-styles">
       :host {
@@ -47,14 +47,14 @@
         <y-type type="Richtext" name="title" data="{{title}}"></y-type>
         <y-type type="Richtext" name="content" data="{{content}}"></y-type>
       </y-element>
-      <sd-doc-title y-richtext="{{title}}"></sd-doc-title>
+      <doc-title y-richtext="{{title}}"></doc-title>
       <quill-element y-richtext="{{content}}" class="doc-content" placeholder="Your content!"></quill-element>
     </paper-card>
   </template>
 
   <script>
     Polymer({
-      is: 'sd-doc-view',
+      is: 'doc-view',
       behaviors: [AppBehaviors.RoomIdentity],
       properties: {
         roomLink: {
@@ -74,9 +74,9 @@
         this.roomSecret = p.secret
         this.title.type.unbindQuillAll()
         this.content.type.unbindQuillAll()
-        this.querySelector('sd-doc-title').clear()
+        this.querySelector('doc-title').clear()
         this.querySelector('quill-element').setText('')
       }
-    });
+    })
   </script>
 </dom-module>
