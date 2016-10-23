@@ -63,19 +63,22 @@
           observer: '_linkChanged'
         },
         roomName: String,
-        roomSecret: String
+        roomSecret: String,
+        title: Object,
+        content: Object
       },
       _linkChanged: function () {
-        if (this.title == null) {
-          return
-        }
         var p = this.parseRoomLink(this.roomLink)
         this.roomName = p.roomName
         this.roomSecret = p.secret
-        this.title.type.unbindQuillAll()
-        this.content.type.unbindQuillAll()
-        this.querySelector('doc-title').clear()
-        this.querySelector('quill-element').setText('')
+        if (this.type != null) {
+          this.title.type.unbindQuillAll()
+          this.querySelector('doc-title').clear()
+        }
+        if (this.content != null) {
+          this.content.type.unbindQuillAll()
+          this.querySelector('quill-element').setText('')
+        }
       }
     })
   </script>
