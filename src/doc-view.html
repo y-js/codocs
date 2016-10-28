@@ -47,8 +47,8 @@
         <y-type type="Richtext" name="title" data="{{title}}"></y-type>
         <y-type type="Richtext" name="content" data="{{content}}"></y-type>
       </y-element>
-      <doc-title y-richtext="{{title}}"></doc-title>
-      <quill-element y-richtext="{{content}}" class="doc-content" placeholder="Your content!"></quill-element>
+      <doc-title id="title" y-richtext="{{title}}"></doc-title>
+      <quill-element id="mainEditArea" y-richtext="{{content}}" class="doc-content" placeholder="Your content!"></quill-element>
     </paper-card>
   </template>
 
@@ -66,6 +66,20 @@
         roomSecret: String,
         title: Object,
         content: Object
+      },
+      attached: function () {
+        var self = this
+        // add scroll event listener to main scroll area
+        document.querySelector('app-header-layout > #contentContainer').onscroll = function () {
+          console.log('dtrn')
+          var toolbar = self.$.mainEditArea.querySelector('.ql-toolbar')
+          var isTitleInView = self.$.title.getBoundingClientRect().bottom <= 0 
+          if (isTitleInView) {
+            toolbar.classList.add('sticky-toolbar')
+          } else {
+            toolbar.classList.remove('sticky-toolbar')
+          }
+        }
       },
       _linkChanged: function () {
         var p = this.parseRoomLink(this.roomLink)
