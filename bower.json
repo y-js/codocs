@@ -28,7 +28,8 @@
     "y-indexeddb": "^8.1.4",
     "google-signin": "^1.3.7",
     "y-map": "^10.0.3",
-    "paper-dialog": "PolymerElements/paper-dialog#^1.1.0"
+    "paper-dialog": "PolymerElements/paper-dialog#^1.1.0",
+    "clipboard-input": "^1.2.2"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
