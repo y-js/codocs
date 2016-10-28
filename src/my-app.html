@@ -14,6 +14,7 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/google-signin/google-signin.html">
 
 <link rel="import" href="../bower_components/quill-element/quill-element.html">
@@ -39,7 +40,10 @@
       :host {
         --app-primary-color: #007fce;
         --app-secondary-color: black;
-
+        --paper-font-common-base: {
+          font-family: 'Open Sans', sans-serif;
+          -webkit-font-smoothing: antialiased;
+        };
         display: block;
       }
       app-header {

@@ -25,8 +25,18 @@
         text-decoration: none;
         color: inherit;
       }
+      .card-dialog {
+        margin: 0;
+      }
     </style>
     <paper-card>
+      <paper-dialog id="deleteDialog" class="card-dialog" on-iron-overlay-closed="onDialogClosed">
+        <h1>Delete this document?</h1>
+        <div class="buttons">
+          <paper-button dialog-dismiss>Cancel</paper-button>
+          <paper-button dialog-confirm autofocus style="color: red">Delete</paper-button>
+        </div>
+      </paper-dialog>
       <div>
         <y-element connector-name="websockets-client" connector-room="{{getRoomName(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="indexeddb" connector-url="localhost:1234">
           <y-type type="Richtext" name="title" data="{{title}}"></y-type>
@@ -35,7 +45,7 @@
         <div class="card-actions">
           <a class="flex" href="#{{getRoomLink(doc.roomId, doc.secret)}}"><paper-button><iron-icon icon="editor:mode-edit"></iron-icon>Edit</paper-button></a>
           <paper-button class="flex" on-tap="openShareTooltip"><iron-icon icon="social:share"></iron-icon>Share</paper-button>
-          <paper-button class="flex" on-tap="delete"><iron-icon icon="icons:delete"></iron-icon>Delete</paper-button>
+          <paper-button class="flex" on-tap="openDeleteDialog"><iron-icon icon="icons:delete"></iron-icon>Delete</paper-button>
         </div>
       </div>
       <!--iron-icon class="doc-icon" icon="icons:description"></iron-icon-->
@@ -52,6 +62,9 @@
           notify: true
         }
       },
+      attached: function () {
+        this.$.deleteDialog.fitInto = this 
+      },
       openShareTooltip: function () {
         console.log('open share tooltip')
       },
@@ -65,6 +78,14 @@
           }
         }
         this.fire('delete-doc', {index: index})
+      },
+      openDeleteDialog: function () {
+        this.$.deleteDialog.open()
+      },
+      onDialogClosed: function (event, detail) {
+        if (detail.confirmed) {
+          this.delete()
+        }
       }
     });
   </script>

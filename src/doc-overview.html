@@ -42,7 +42,7 @@
       <y-array name="docs" data="{{docs}}"></y-array>
     </y-element>
     <div class="layout horizontal wrap">
-      <paper-card class="add-doc-card doc-card" on-tap="addDoc">
+      <paper-card id="addDocCard" class="add-doc-card doc-card" on-tap="addDoc">
         <iron-icon icon="icons:add"></iron-icon>
       </paper-card>
       <template is="dom-repeat" items="{{docs}}">
