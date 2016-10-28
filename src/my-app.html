@@ -35,7 +35,7 @@
 
 <dom-module id="my-app">
   <template>
-    <style>
+    <style include="iron-flex iron-flex-alignment">
       :host {
         --app-primary-color: #007fce;
         --app-secondary-color: black;
@@ -96,10 +96,17 @@
       <app-header-layout has-scrolling-region>
 
         <app-header effects="waterfall">
-          <app-toolbar>
-            <!--paper-icon-button icon="menu"></paper-icon-button-->
-            <!--div main-title>coDOCS</div-->
-           <codocs-logo main-title></codocs-logo>
+          <app-toolbar class="layout horizontal">
+            
+            <a href="/" class="a-unstyle flex">
+              <template is="dom-if" if="{{showGoBackButton}}">
+                <paper-icon-button icon="arrow-back"></paper-icon-button>
+              </template>
+              <template is="dom-if" if="{{!showGoBackButton}}">
+                <codocs-logo></codocs-logo>
+              </template>
+            </a>
+
             <template is="dom-if" if="{{isOnline}}">
               <google-signin
                 on-google-signin-success="googleSignin"
@@ -107,6 +114,9 @@
                 openid-prompt="select_account"
                 on-tap="signinTapped"
                 client-id="863221146052-4h694v1mmn93991iq8vm9ub8tap3h7ve.apps.googleusercontent.com"></google-signin>
+            </template>
+            <template is="dom-if" if="{{!isOnline}}">
+              <div style="width: 100px;text-align: center;">Offline</div>
             </template>
           </app-toolbar>
         </app-header>
@@ -151,6 +161,11 @@
           type: Boolean,
           notify: true,
           observer: '_isOnlineChanged'
+        },
+        showGoBackButton: {
+          type: Boolean,
+          computed: '_showGoBackButton(page)'
+
         }
       },
       observers: [
@@ -161,6 +176,9 @@
           this.isAuthorized = true
           this.$.overview.setGoogleIdToken(null, localStorage.overviewRoomId)
         }
+      },
+      _showGoBackButton: function (page) {
+        return page !== 'overview'
       },
       _updatePage: function () {
         var id = this.routeData == null ? false : this.routeData.roomLink
