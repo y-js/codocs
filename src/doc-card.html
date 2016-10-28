@@ -28,14 +28,23 @@
       .card-dialog {
         margin: 0;
       }
+      #shareDialog clipboard-input {
+      }
+      #shareDialog {
+        height: 200px;
+      }
     </style>
     <paper-card>
-      <paper-dialog id="deleteDialog" class="card-dialog" on-iron-overlay-closed="onDialogClosed">
+      <paper-dialog id="deleteDialog" class="card-dialog" on-iron-overlay-closed="_deleteDialogClosed">
         <h1>Delete this document?</h1>
         <div class="buttons">
           <paper-button dialog-dismiss>Cancel</paper-button>
           <paper-button dialog-confirm autofocus style="color: red">Delete</paper-button>
         </div>
+      </paper-dialog>
+      <paper-dialog id="shareDialog" class="card-dialog" no-overlap horizontal-align="left" vertical-align="top">
+        <clipboard-input value="{{getRoomLink(doc.roomId)}}" copy-text="Read Only Link" title-text="Copy read-only link"></clipboard-input>
+        <clipboard-input value="{{getRoomLink(doc.roomId, doc.secret)}}" copy-text="Read & Edit link" title-text="Copy read & edit link"></clipboard-input>
       </paper-dialog>
       <div>
         <y-element connector-name="websockets-client" connector-room="{{getRoomName(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="indexeddb" connector-url="localhost:1234">
@@ -43,8 +52,8 @@
         </y-element>
         <doc-title class="card-content" y-richtext={{title}}></doc-title>
         <div class="card-actions">
-          <a class="flex" href="#{{getRoomLink(doc.roomId, doc.secret)}}"><paper-button><iron-icon icon="editor:mode-edit"></iron-icon>Edit</paper-button></a>
-          <paper-button class="flex" on-tap="openShareTooltip"><iron-icon icon="social:share"></iron-icon>Share</paper-button>
+          <a class="flex" href="{{getRoomLink(doc.roomId, doc.secret)}}"><paper-button><iron-icon icon="editor:mode-edit"></iron-icon>Edit</paper-button></a>
+          <paper-button id="shareButton" class="flex" on-tap="openShareTooltip"><iron-icon icon="social:share"></iron-icon>Share</paper-button>
           <paper-button class="flex" on-tap="openDeleteDialog"><iron-icon icon="icons:delete"></iron-icon>Delete</paper-button>
         </div>
       </div>
@@ -66,7 +75,9 @@
         this.$.deleteDialog.fitInto = this 
       },
       openShareTooltip: function () {
-        console.log('open share tooltip')
+        var d = this.$.shareDialog
+        d.positionTarget = this.$.shareButton
+        d.open()
       },
       delete: function (nativeEvent) {
         var parent = this.parentNode
@@ -82,7 +93,7 @@
       openDeleteDialog: function () {
         this.$.deleteDialog.open()
       },
-      onDialogClosed: function (event, detail) {
+      _deleteDialogClosed: function (event, detail) {
         if (detail.confirmed) {
           this.delete()
         }

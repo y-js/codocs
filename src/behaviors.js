@@ -15,9 +15,9 @@ window.AppBehaviors = {
       }))
     },
     getRoomLink: function (roomId, secret) {
-      return btoa(JSON.stringify({
+      return window.location.origin + '/#' + btoa(JSON.stringify({
         roomId: roomId,
-        secret: secret
+        secret: secret || null
       }))
     },
     parseRoomLink: function (link) {

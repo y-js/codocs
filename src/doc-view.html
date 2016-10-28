@@ -47,8 +47,8 @@
         <y-type type="Richtext" name="title" data="{{title}}"></y-type>
         <y-type type="Richtext" name="content" data="{{content}}"></y-type>
       </y-element>
-      <doc-title id="title" y-richtext="{{title}}"></doc-title>
-      <quill-element id="mainEditArea" y-richtext="{{content}}" class="doc-content" placeholder="Your content!"></quill-element>
+      <doc-title id="title" y-richtext="{{title}}" read-only="{{readOnly}}"></doc-title>
+      <quill-element id="mainEditArea" read-only="{{readOnly}}" y-richtext="{{content}}" class="doc-content" placeholder="Your content!"></quill-element>
     </paper-card>
   </template>
 
@@ -63,9 +63,19 @@
           observer: '_linkChanged'
         },
         roomName: String,
-        roomSecret: String,
+        roomSecret: { 
+          type: String,
+          notify: true
+        },
+        readOnly: {
+          type: Boolean,
+          computed: '_computeReadOnly(roomSecret)'
+        },
         title: Object,
         content: Object
+      },
+      _computeReadOnly: function (secret) {
+        return secret == null
       },
       attached: function () {
         var self = this

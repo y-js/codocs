@@ -18,7 +18,7 @@
         }
       }
     </style>
-    <quill-element disabled="{{disabled}}" y-richtext="{{yRichtext}}" class="card-content doc-title" theme="bubble" placeholder="Title" toolbar='[["link", "image", "video", {"color": []}]]'></quill-element>
+    <quill-element read-only="{{readOnly}}" disabled="{{disabled}}" y-richtext="{{yRichtext}}" class="card-content doc-title" theme="bubble" placeholder="Title" toolbar='[["link", "image", "video", {"color": []}]]'></quill-element>
   </template>
 
   <script>
@@ -30,6 +30,10 @@
           notify: true
         },
         disabled: {
+          type: Boolean,
+          notify: true
+        },
+        readOnly: {
           type: Boolean,
           notify: true
         }
