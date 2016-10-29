@@ -1,7 +1,7 @@
 {
-  "name": "simple-docs",
+  "name": "codocs",
   "authors": [
-    "The Polymer Authors"
+    "Kevin Jahns <kevin.jahns@rwth-aachen.de>"
   ],
   "private": true,
   "dependencies": {
