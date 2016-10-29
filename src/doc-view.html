@@ -41,7 +41,7 @@
       }
     </style>
     <paper-card class="view-container">
-      <y-element connector-name="websockets-client" connector-room="{{roomName}}" connector-auth="{{roomSecret}}" db-name="indexeddb" connector-url="localhost:1234">
+      <y-element connector-url="{{connectorUrl}}" connector-name="websockets-client" connector-room="{{roomName}}" connector-auth="{{roomSecret}}" db-name="indexeddb" connector-url="localhost:1234">
         <y-type type="Richtext" name="title" data="{{title}}"></y-type>
         <y-type type="Richtext" name="content" data="{{content}}"></y-type>
       </y-element>

@@ -47,7 +47,7 @@
         <clipboard-input value="{{getRoomLink(doc.roomId, doc.secret)}}" copy-text="Read & Edit link" title-text="Copy read & edit link"></clipboard-input>
       </paper-dialog>
       <div>
-        <y-element connector-name="websockets-client" connector-room="{{getRoomName(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="indexeddb" connector-url="localhost:1234">
+        <y-element connector-url="{{connectorUrl}}" connector-name="websockets-client" connector-room="{{getRoomName(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="indexeddb" connector-url="localhost:1234">
           <y-type type="Richtext" name="title" data="{{title}}"></y-type>
         </y-element>
         <doc-title class="card-content" y-richtext={{title}}></doc-title>
