@@ -3,7 +3,7 @@
 'use strict'
 
 var verifyIdToken = require('google-id-token-verifier').verify
-var Y = require('../yjs/yjs/src/y.js') // TODO: require('yjs')
+var Y = require('yjs')
 var minimist = require('minimist')
 var atob = require('atob')
 var md5 = require('js-md5')
