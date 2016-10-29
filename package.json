@@ -16,7 +16,9 @@
   "scripts": {
     "test": "polymer test",
     "start": "node server.js",
-    "publish": "rm -rf build && polymer build && cd build/bundled && git init && git add -A && git commit -am 'publish' && git remote add origin git@github.com:codocs/codocs.github.io.git && git push origin master --force"
+    "build": "cd images; sh convertimages.sh; cd ..; rm -rf build && polymer build",
+    "publish": "npm run build && cd build/bundled && git init && git add -A && git commit -am 'publish' && git remote add origin git@github.com:codocs/codocs.github.io.git && git push origin master --force",
+    "serve": "polymer serve & node server"
   },
   "repository": {
     "type": "git",
@@ -27,5 +29,8 @@
   "bugs": {
     "url": "https://github.com/DadaMonad/easy-docs/issues"
   },
-  "homepage": "https://codocs.github.io"
+  "homepage": "https://codocs.github.io",
+  "engines": {
+    "node": "6.8.1"
+  }
 }
