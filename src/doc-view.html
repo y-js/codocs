@@ -14,13 +14,11 @@
       }
       .doc-content {
         min-height: 600px;
+        border: none;
         --quill-toolbar: {
+          border-top: 1px solid #ccc;
+          border-bottom: 1px solid #ccc;
           text-align: center;
-          border-left: none;
-          border-right: none;
-        }
-        --quill-editor-container: {
-          border: none;
         }
       }
       @media (min-width: 660px) {
@@ -48,7 +46,7 @@
         <y-type type="Richtext" name="content" data="{{content}}"></y-type>
       </y-element>
       <doc-title id="title" y-richtext="{{title}}" read-only="{{readOnly}}"></doc-title>
-      <quill-element id="mainEditArea" read-only="{{readOnly}}" y-richtext="{{content}}" class="doc-content" placeholder="Your content!"></quill-element>
+      <quill-element id="mainEditArea" read-only="{{readOnly}}" hide-tools="{{readOnly}}" y-richtext="{{content}}" class="doc-content" placeholder="Your content!"></quill-element>
     </paper-card>
   </template>
 
@@ -81,7 +79,6 @@
         var self = this
         // add scroll event listener to main scroll area
         document.querySelector('app-header-layout > #contentContainer').onscroll = function () {
-          console.log('dtrn')
           var toolbar = self.$.mainEditArea.querySelector('.ql-toolbar')
           var isTitleInView = self.$.title.getBoundingClientRect().bottom <= 0 
           if (isTitleInView) {

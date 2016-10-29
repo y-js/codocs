@@ -8,6 +8,7 @@
         display: block;
       }
       .doc-title {
+        border: 0;
         height: 235px;
         width: 100%;
         --quill-editor: {
@@ -18,7 +19,7 @@
         }
       }
     </style>
-    <quill-element read-only="{{readOnly}}" disabled="{{disabled}}" y-richtext="{{yRichtext}}" class="card-content doc-title" theme="bubble" placeholder="Title" toolbar='[["link", "image", "video", {"color": []}]]'></quill-element>
+    <quill-element read-only="{{readOnly}}" hide-tools="{{readOnly}}" disabled="{{disabled}}" y-richtext="{{yRichtext}}" class="card-content doc-title" theme="bubble" placeholder="Title" toolbar='[["link", "image", "video", {"color": []}]]'></quill-element>
   </template>
 
   <script>
