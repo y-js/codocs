@@ -90,7 +90,7 @@ function createYInstance (roomName) {
       share: {}
     })
   } catch (error) {
-    return
+    return Promise.reject(error)
   }
 }
 
