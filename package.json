@@ -10,7 +10,7 @@
     "atob": "^2.0.3",
     "google-id-token-verifier": "^0.2.3",
     "js-md5": "^0.4.1",
-    "y-websockets-server": "^9.1.3",
+    "y-websockets-server": "^9.1.4",
     "yjs": "^12.1.0"
   },
   "devDependencies": {},
