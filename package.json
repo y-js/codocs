@@ -1,6 +1,7 @@
 {
   "name": "codocs",
   "version": "1.0.0",
+  "private": true,
   "description": "Collaborative Docs",
   "main": "server.js",
   "directories": {
@@ -19,8 +20,9 @@
     "start": "node server.js",
     "build": "rm -rf build && polymer build",
     "build_images": "cd images; sh convertimages.sh; cd ..;",
-    "publish": "npm run build_images && npm run build && cd build/bundled && git init && git add -A && git commit -am 'publish' && git remote add origin git@github.com:codocs/codocs.github.io.git && git push origin master --force",
-    "serve": "polymer serve & node server"
+    "publish": "npm run build && cd build/unbundled && git init && git add -A && git commit -am 'publish' && git remote add origin git@github.com:codocs/codocs.github.io.git && git push origin master --force",
+    "serve": "polymer serve & node server",
+    "serve_build": "polymer build && cd build/unbundled && http-server"
   },
   "repository": {
     "type": "git",
@@ -29,7 +31,7 @@
   "author": "Kevin Jahns <kevin.jahns@rwth-aachen.de>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/DadaMonad/easy-docs/issues"
+    "url": "https://github.com/codocs/codocs/issues"
   },
   "homepage": "https://codocs.github.io",
   "engines": {
