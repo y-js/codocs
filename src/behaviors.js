@@ -1,7 +1,7 @@
 
 (function () {
   var connectorUrl
-  if (window.location.hostname === "codocs.github.io") {
+  if (window.location.hostname !== 'localhost') {
     connectorUrl = 'https://codocs.herokuapp.com'
   } else {
     connectorUrl = 'localhost:1234'
