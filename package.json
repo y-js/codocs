@@ -18,8 +18,8 @@
     "test": "polymer test",
     "start": "node server.js",
     "build": "rm -rf build && polymer build",
-    "build_images": "cd images; sh convertimages.sh;",
-    "publish": "npm run build_images; cd ..; npm run build && cd build/bundled && git init && git add -A && git commit -am 'publish' && git remote add origin git@github.com:codocs/codocs.github.io.git && git push origin master --force",
+    "build_images": "cd images; sh convertimages.sh; cd ..;",
+    "publish": "npm run build_images && npm run build && cd build/bundled && git init && git add -A && git commit -am 'publish' && git remote add origin git@github.com:codocs/codocs.github.io.git && git push origin master --force",
     "serve": "polymer serve & node server"
   },
   "repository": {
