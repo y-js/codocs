@@ -40,6 +40,9 @@
         }
       },
       clear: function () {
+        if (this.yRichtext != null) {
+          this.yRichtext.unbindQuillAll()
+        }
         this.querySelector('quill-element').setText('')
       }
     });

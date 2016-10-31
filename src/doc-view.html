@@ -89,17 +89,18 @@
         }
       },
       _linkChanged: function () {
-        var p = this.parseRoomLink(this.roomLink)
-        this.roomName = p.roomName
-        this.roomSecret = p.secret
         if (this.type != null) {
           this.title.type.unbindQuillAll()
-          this.querySelector('doc-title').clear()
+          this.$.title('doc-title').clear()
         }
         if (this.content != null) {
           this.content.type.unbindQuillAll()
-          this.querySelector('quill-element').setText('')
+          this.$.mainEditArea.setText('')
         }
+        // This can instantly exchange this.content.type / this.title.type. This is why we call it now
+        var p = this.parseRoomLink(this.roomLink)
+        this.roomName = p.roomName
+        this.roomSecret = p.secret
       }
     })
   </script>

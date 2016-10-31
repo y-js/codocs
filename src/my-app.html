@@ -117,7 +117,6 @@
                 on-google-signin-success="googleSignin"
                 on-google-signed-out="googleSignout"
                 openid-prompt="select_account"
-                on-tap="signinTapped"
                 client-id="863221146052-4h694v1mmn93991iq8vm9ub8tap3h7ve.apps.googleusercontent.com"></google-signin>
             </template>
             <template is="dom-if" if="{{!isOnline}}">
@@ -207,8 +206,41 @@
         this.$.overview.setGoogleIdToken(idToken, roomId)
       },
       googleSignout: function () {
+        var status = this.isAuthorized
         this.isAuthorized = false
-        delete localStorage.overviewRoomId
+        if (status === true) {
+          // if the user actively signs out, we clean up everything
+          // this is why we check if the user was already signed in
+          delete localStorage.overviewRoomId
+          // close all y-elements
+          var yElements = document.querySelectorAll('y-element')
+          var promises = []
+          for (var i = yElements.length - 1; i >= 0; i--) {
+            promises.push(yElements[i].close())
+          }
+          Promise.all(promises).then(function () {
+            // remove all databases
+            for (var i = localStorage.length - 1; i >= 0; i--) {
+              try {
+                (function () {
+                  var val = JSON.parse(localStorage.key(i))
+                  if (val[0] === 'Yjs_indexeddb') {
+                    // val[1] is a indexeddb namespace
+                    var request = window.indexedDB.deleteDatabase(val[1])
+                    request.onerror = function (event) {
+                      console.info("Error deleting indexeddb database.", event)
+                    }
+                    localStorage.removeItem(JSON.stringify(['__YJS__', val[1]]))
+                    localStorage.removeItem(JSON.stringify(['Yjs_indexeddb', val[1]]))
+                  }
+                })()
+              } catch (e) {
+                continue
+              }
+            }
+            window.location.reload()
+          })
+        }
       }
     })
   </script>
