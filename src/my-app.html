@@ -114,6 +114,7 @@
 
             <template is="dom-if" if="{{isOnline}}">
               <google-signin
+                on-tap="tapSignoutButton"
                 on-google-signin-success="googleSignin"
                 on-google-signed-out="googleSignout"
                 openid-prompt="select_account"
@@ -205,10 +206,8 @@
         localStorage.overviewRoomId = roomId
         this.$.overview.setGoogleIdToken(idToken, roomId)
       },
-      googleSignout: function () {
-        var status = this.isAuthorized
-        this.isAuthorized = false
-        if (status === true) {
+      tapSignoutButton: function () {
+        if (this.isAuthorized) {
           // if the user actively signs out, we clean up everything
           // this is why we check if the user was already signed in
           delete localStorage.overviewRoomId
@@ -241,6 +240,9 @@
             window.location.reload()
           })
         }
+      },
+      googleSignout: function () {
+        this.isAuthorized = false
       }
     })
   </script>
