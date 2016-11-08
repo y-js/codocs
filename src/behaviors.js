@@ -2,7 +2,7 @@
 (function () {
   var connectorUrl
   if (window.location.hostname !== 'localhost') {
-    connectorUrl = 'https://codocs.herokuapp.com'
+    connectorUrl = 'codocs.dmonad.io'
   } else {
     connectorUrl = 'localhost:1234'
   }
