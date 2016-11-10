@@ -46,7 +46,7 @@
         <iron-icon icon="icons:add"></iron-icon>
       </paper-card>
       <template is="dom-repeat" items="{{docs}}">
-        <doc-card class="doc-card" doc="{{item}}" on-delete-doc="deleteDoc"></doc-card>
+        <doc-card class="doc-card" doc="{{item}}" on-delete-doc="deleteDoc" shown="{{shown}}"></doc-card>
       </template>
     </div>
   </template>
@@ -73,7 +73,11 @@
           type: Array,
           notify: true
         },
-        connectorRoom: String
+        connectorRoom: String,
+        shown: {
+          type: Boolean,
+          notify: true
+        }
       },
       setGoogleIdToken: function (idToken, roomId) {
         if (this.connectorAuth !== idToken && idToken != null) {

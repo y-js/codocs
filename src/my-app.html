@@ -128,8 +128,8 @@
 
         <iron-pages selected="{{page}}" attr-for-selected="location">
           <div location="home"><h1>Home</h1></div>
-          <doc-overview id="overview" location="overview"></doc-overview>
-          <doc-view location="view" room-link="{{routeData.roomLink}}"></doc-view>
+          <doc-overview id="overview" location="overview" shown="{{isOverviewActive(page)}}"></doc-overview>
+          <doc-view location="view" room-link="{{routeData.roomLink}}" shown="{{isViewActive(page)}}"></doc-view>
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>
@@ -144,6 +144,12 @@
         window.addEventListener('online', function(e) { self.isOnline = true })
       },
       is: 'my-app',
+      isOverviewActive: function () {
+        return this.page === 'overview'
+      },
+      isViewActive: function () {
+        return this.page === 'view'
+      },
       properties: {
         roomLink: {
           type: String,
