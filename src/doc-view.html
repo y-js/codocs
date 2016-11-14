@@ -16,6 +16,7 @@
         min-height: 600px;
         border: none;
         --quill-toolbar: {
+          position: absolute;
           border-top: 1px solid #ccc;
           border-bottom: 1px solid #ccc;
           text-align: center;
@@ -81,16 +82,25 @@
       },
       attached: function () {
         var self = this
-        // add scroll event listener to main scroll area
-        document.querySelector('app-header-layout > #contentContainer').onscroll = function () {
-          var toolbar = self.$.mainEditArea.querySelector('.ql-toolbar')
-          var isTitleInView = self.$.title.getBoundingClientRect().bottom <= 0 
-          if (isTitleInView) {
-            toolbar.classList.add('sticky-toolbar')
-          } else {
-            toolbar.classList.remove('sticky-toolbar')
+        this.async(function () {
+          // add scroll event listener to main scroll area
+          document.querySelector('app-header-layout > #contentContainer').onscroll = function () {
+            var toolbar = self.$.mainEditArea.querySelector('.ql-toolbar')
+            var isTitleInView = self.$.title.getBoundingClientRect().bottom <= 0 
+            if (isTitleInView) {
+              toolbar.classList.add('sticky-toolbar')
+            } else {
+              toolbar.classList.remove('sticky-toolbar')
+            }
           }
-        }
+          function onresize () {
+            var height = self.$.mainEditArea.querySelector('.ql-toolbar').getBoundingClientRect().height
+            var editor = self.$.mainEditArea.querySelector('.ql-editor')
+            editor.setAttribute('style', 'margin-top: ' + height + 'px;')
+          }
+          window.addEventListener('resize', onresize)
+          onresize()
+        })
       },
       _linkChanged: function () {
         if (this.type != null) {
