@@ -17,6 +17,8 @@
         border: none;
         --quill-toolbar: {
           position: absolute;
+          width: 100%;
+          z-index: 2;
           border-top: 1px solid #ccc;
           border-bottom: 1px solid #ccc;
           text-align: center;
@@ -42,7 +44,7 @@
       }
     </style>
     <paper-card class="view-container">
-      <y-element connected="{{shown}}" connector-url="{{connectorUrl}}" connector-name="websockets-client" connector-room="{{roomName}}" connector-auth="{{roomSecret}}" db-name="indexeddb" connector-url="localhost:1234">
+      <y-element connected="{{shown}}" connector-name="serviceworker" connector-room="{{roomName}}" connector-auth="{{roomSecret}}" db-name="memory">
         <y-type type="Richtext" name="title" data="{{title}}"></y-type>
         <y-type type="Richtext" name="content" data="{{content}}"></y-type>
       </y-element>
@@ -71,7 +73,10 @@
           computed: '_computeReadOnly(roomSecret)'
         },
         title: Object,
-        content: Object,
+        content: {
+          type: Object,
+          observer: '_computeEditorTopMargin'
+        },
         shown: {
           type: Boolean,
           notify: true
@@ -80,26 +85,30 @@
       _computeReadOnly: function (secret) {
         return secret == null
       },
+      _computeEditorTopMargin: function () {
+        var height = this.$.mainEditArea.querySelector('.ql-toolbar').getBoundingClientRect().height
+        var editor = this.$.mainEditArea.querySelector('.ql-editor')
+        editor.setAttribute('style', 'margin-top: ' + height + 'px;')
+        this._computeToolbarStickiness()
+      },
+      _computeToolbarStickiness: function () {
+        var toolbar = this.$.mainEditArea.querySelector('.ql-toolbar')
+        var isTitleInView = this.$.title.getBoundingClientRect().bottom <= 0 
+        if (isTitleInView) {
+          toolbar.classList.add('sticky-toolbar')
+        } else {
+          toolbar.classList.remove('sticky-toolbar')
+        }
+      },
       attached: function () {
         var self = this
         this.async(function () {
           // add scroll event listener to main scroll area
-          document.querySelector('app-header-layout > #contentContainer').onscroll = function () {
-            var toolbar = self.$.mainEditArea.querySelector('.ql-toolbar')
-            var isTitleInView = self.$.title.getBoundingClientRect().bottom <= 0 
-            if (isTitleInView) {
-              toolbar.classList.add('sticky-toolbar')
-            } else {
-              toolbar.classList.remove('sticky-toolbar')
-            }
-          }
-          function onresize () {
-            var height = self.$.mainEditArea.querySelector('.ql-toolbar').getBoundingClientRect().height
-            var editor = self.$.mainEditArea.querySelector('.ql-editor')
-            editor.setAttribute('style', 'margin-top: ' + height + 'px;')
-          }
-          window.addEventListener('resize', onresize)
-          onresize()
+          document.querySelector('app-header-layout > #contentContainer').onscroll = self._computeToolbarStickiness.bind(self)
+          var callback = self._computeEditorTopMargin.bind(self)
+          window.addEventListener('resize', callback)
+          window.addEventListener('WebComponentsReady', callback)
+          callback()
         })
       },
       _linkChanged: function () {
