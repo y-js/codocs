@@ -31,7 +31,8 @@
     "paper-dialog": "PolymerElements/paper-dialog#^1.1.0",
     "clipboard-input": "^1.2.2",
     "yjs": "^12.1.0",
-    "y-element": "^0.0.2"
+    "y-element": "^0.0.2",
+    "y-webworker": "^0.1.1"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

@@ -86,13 +86,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       if ('serviceWorker' in navigator) {
         // load caching service worker
-        // navigator.serviceWorker.register('/service-worker.js')
-        // load yjs service worker - give it a different scope
-        window['yjs-service-worker'] = navigator.serviceWorker.register('/yjs-service-worker.js', { scope: '/yjs-service-worker' })
+        navigator.serviceWorker.register('/service-worker.js')
       }
-      window.ww = new SharedWorker('WebWorker.js')
-      ww.onerror = function () {console.log('err',arguments)}
-      ww.port.start()
     </script>
 
     <link rel="import" href="/src/my-app.html">
