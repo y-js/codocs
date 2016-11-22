@@ -5,9 +5,10 @@
   "sourceGlobs": [
    "src/**/*",
    "images/**/*",
-   "fonts/**/**",
+   "fonts/**/*.*",
    "bower.json",
-   "yjs-webworker.js"
+   "yjs-webworker.js",
+   "bower_components/**/*.*"
   ],
   "includeDependencies": [
     "manifest.json",
