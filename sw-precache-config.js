@@ -14,5 +14,9 @@ module.exports = {
     '/bower_components/webcomponentsjs/webcomponents-lite.min.js',
     '/fonts/fonts.css'
   ],
-  navigateFallback: '/index.html'
+  navigateFallback: '/index.html',
+  runtimeCaching: [{
+    urlPattern: /\/fonts\/(.*)/,
+    handler: 'cacheFirst'
+  }]
 };

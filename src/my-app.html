@@ -213,6 +213,7 @@
       },
       tapSignoutButton: function () {
         if (this.isAuthorized) {
+          this.isAuthorized = false
           // if the user actively signs out, we clean up everything
           // this is why we check if the user was already signed in
           delete localStorage.overviewRoomId
@@ -247,7 +248,6 @@
         }
       },
       googleSignout: function () {
-        this.isAuthorized = false
       }
     })
   </script>
