@@ -1,11 +1,13 @@
 
+var url = location.host === 'localhost:8080' ? 'localhost:1234' : 'https://codocs.dmonad.io'
 
+// Define global variables
 DBConfig = {
   name: 'indexeddb'
 }
 ConnectorConfig = {
   name: 'websockets-client',
-  url: 'https://codocs.dmonad.io',
+  url: url,
   options: {
     jsonp: false
   }
