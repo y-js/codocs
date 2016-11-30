@@ -14,7 +14,9 @@
     "y-websockets-server": "^9.1.4",
     "yjs": "^12.1.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "polymer-cli": "^0.17.0"
+  },
   "scripts": {
     "test": "polymer test",
     "start": "node server.js",
