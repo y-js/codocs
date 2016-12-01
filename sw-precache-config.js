@@ -12,7 +12,8 @@ module.exports = {
     '/index.html',
     '/manifest.json',
     '/bower_components/webcomponentsjs/webcomponents-lite.min.js',
-    '/fonts/fonts.css'
+    '/fonts/fonts.css',
+    '/yjs-webworker.js'
   ],
   navigateFallback: '/index.html',
   runtimeCaching: [{
