@@ -13,7 +13,12 @@ module.exports = {
     '/manifest.json',
     '/bower_components/webcomponentsjs/webcomponents-lite.min.js',
     '/fonts/fonts.css',
-    '/yjs-webworker.js'
+    '/yjs-webworker.js',
+    '/bower_components/yjs/y.js',
+    '/bower_components/y-memory/y-memory.js',
+    '/bower_components/y-indexeddb/y-indexeddb.js',
+    '/bower_components/y-websockets-client/y-websockets-client.js',
+    '/bower_components/y-webworker/yjs-webworker-service.js'
   ],
   navigateFallback: '/index.html',
   runtimeCaching: [{
