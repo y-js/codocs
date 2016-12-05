@@ -22,7 +22,6 @@
     "start": "node server.js",
     "build": "rm -rf build && polymer build",
     "build_images": "cd images; sh convertimages.sh; cd ..;",
-    "publish": "npm run build && cd build/unbundled && git init && git add -A && git commit -am 'publish' && git remote add origin git@github.com:codocs/codocs.github.io.git && git push origin master --force",
     "serve": "polymer serve & node server",
     "serve_build": "polymer build && cd build/unbundled && http-server"
   },

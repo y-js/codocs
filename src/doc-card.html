@@ -7,13 +7,12 @@
       paper-card {
         width: 100%;
       }
-      .doc-icon {
-        --iron-icon-width: 42px;
-        --iron-icon-height: 42px;
-        margin: 8px;
+      .document-type-icon {
+        --iron-icon-width: 30px;
+        --iron-icon-height: 30px;
         position: absolute;
-        right: 0;
-        top: 0;
+        right: 4px;
+        top: 7px;
       }
       .description {
         color: var(--paper-grey-600); margin: 10px 0;
@@ -35,6 +34,7 @@
       }
     </style>
     <paper-card>
+      <iron-icon class="document-type-icon" icon="document-types:[[doc.type]]" title="Rich Text document"></iron-icon>
       <paper-dialog id="deleteDialog" class="card-dialog" on-iron-overlay-closed="_deleteDialogClosed">
         <h1>Delete this document?</h1>
         <div class="buttons">
