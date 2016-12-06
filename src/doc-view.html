@@ -1,6 +1,19 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="shared-styles.html">
 
+<style>
+  .sticky-toolbar {
+    position: fixed !important;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border-bottom: 1px solid #ccc !important;
+  }
+</style>
+
+
 <dom-module id="doc-view">
   <template>
     <style include="shared-styles">
@@ -11,6 +24,7 @@
       .view-container {
         width: 100%;
         display: block;
+        margin-bottom: 90px;
       }
       .doc-content {
         min-height: 600px;
@@ -19,21 +33,24 @@
           position: absolute;
           width: 100%;
           z-index: 2;
-          border-top: 1px solid #ccc;
-          border-bottom: 1px solid #ccc;
+          border: 0;
           text-align: center;
-        }
+        };
       }
       @media (min-width: 660px) {
         .view-container {
+          margin-top: 15px;
           max-width: 660px;
-          margin: auto;
+          margin-left: auto;
+          margin-right: auto;
         }
       }
       @media (min-width: 1000px) {
         .view-container {
+          margin-top: 25px;
           max-width: 900px;
-          margin: auto;
+          margin-left: auto;
+          margin-right: auto;
         }
         .doc-content {
           --quill-editor: {
@@ -43,12 +60,12 @@
         }
       }
     </style>
-    <paper-card class="view-container">
+    <paper-card id="viewContainer" class="view-container">
       <y-element connected="{{shown}}" connector-name="webworker"  connector-url="yjs-webworker.js" connector-room="{{roomName}}" connector-auth="{{roomSecret}}" db-name="memory">
         <y-type type="Richtext" name="title" data="{{title}}"></y-type>
         <y-type type="Richtext" name="content" data="{{content}}"></y-type>
       </y-element>
-      <doc-title id="title" y-richtext="{{title}}" read-only="{{readOnly}}"></doc-title>
+      <!--doc-title id="title" y-richtext="{{title}}" read-only="{{readOnly}}"></doc-title-->
       <quill-element id="mainEditArea" read-only="{{readOnly}}" hide-tools="{{readOnly}}" y-richtext="{{content}}" class="doc-content" placeholder="Your content!"></quill-element>
     </paper-card>
   </template>
@@ -70,9 +87,13 @@
         },
         readOnly: {
           type: Boolean,
+          notify: true,
           computed: '_computeReadOnly(roomSecret)'
         },
-        title: Object,
+        title: {
+          type: Object,
+          notify: true
+        },
         content: {
           type: Object,
           observer: '_computeEditorTopMargin'
@@ -93,7 +114,7 @@
       },
       _computeToolbarStickiness: function () {
         var toolbar = this.$.mainEditArea.querySelector('.ql-toolbar')
-        var isTitleInView = this.$.title.getBoundingClientRect().bottom <= 0 
+        var isTitleInView = this.$.viewContainer.getBoundingClientRect().top < 0
         if (isTitleInView) {
           toolbar.classList.add('sticky-toolbar')
         } else {

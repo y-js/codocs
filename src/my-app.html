@@ -36,6 +36,13 @@
 <link rel="import" href="doc-view.html">
 <link rel="import" href="codocs-logo.html">
 
+<style>
+  .title-element .ql-blank::before {
+    color: inherit;
+    font-weight: normal;
+  }
+</style>
+
 <dom-module id="my-app">
   <template>
     <style include="iron-flex iron-flex-alignment">
@@ -74,8 +81,16 @@
 
       .drawer-list a.iron-selected {
         color: black;
-
         font-weight: bold;
+      }
+
+      .title-element {
+        border: 0;
+        --quill-editor: {
+          font-family: 'Open Sans', sans-serif;
+          font-weight: bold;
+          font-size: 1.5em;
+        };
       }
       
     </style>
@@ -103,15 +118,17 @@
 
         <app-header effects="waterfall">
           <app-toolbar class="layout horizontal">
-            
-            <a href="/" class="a-unstyle flex">
-              <template is="dom-if" if="{{showGoBackButton}}">
+            <template is="dom-if" if="{{showGoBackButton}}">
+              <a href="/" class="a-unstyle">
                 <paper-icon-button icon="arrow-back"></paper-icon-button>
-              </template>
-              <template is="dom-if" if="{{!showGoBackButton}}">
+              </a>
+              <quill-element y-richtext="{{title}}" class="flex title-element" theme="bubble" placeholder="Title of this document.." read-only="{{titleReadOnly}}"></quill-element>
+            </template>
+            <template is="dom-if" if="{{!showGoBackButton}}">
+              <a href="/" class="a-unstyle flex">
                 <codocs-logo></codocs-logo>
-              </template>
-            </a>
+              </a>
+            </template>
 
             <template is="dom-if" if="{{isOnline}}">
               <google-signin
@@ -130,7 +147,7 @@
         <iron-pages selected="{{page}}" attr-for-selected="location">
           <div location="home"><h1>Home</h1></div>
           <doc-overview id="overview" location="overview" shown="{{isOverviewActive(page)}}"></doc-overview>
-          <doc-view location="view" room-link="{{routeData.roomLink}}" shown="{{isViewActive(page)}}"></doc-view>
+          <doc-view location="view" room-link="{{routeData.roomLink}}" shown="{{isViewActive(page)}}" title="{{title}}" read-only="{{titleReadOnly}}"></doc-view>
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>
