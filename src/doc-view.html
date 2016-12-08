@@ -2,17 +2,16 @@
 <link rel="import" href="shared-styles.html">
 
 <style>
-  .sticky-toolbar {
-    position: fixed !important;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    right: 0;
-    background-color: white;
-    border-bottom: 1px solid #ccc !important;
+.doc-content .ql-editor {
+  padding-bottom: 100px;
+}
+@media (min-width: 1000px) {
+  .doc-content .ql-editor {
+    width: 660px;
+    margin: auto;
   }
+}
 </style>
-
 
 <dom-module id="doc-view">
   <template>
@@ -24,20 +23,18 @@
       .view-container {
         width: 100%;
         display: block;
-        margin-bottom: 90px;
+        margin-bottom: 360px;
       }
       .doc-content {
         min-height: 600px;
         border: none;
-        --quill-toolbar: {
-          position: absolute;
-          width: 100%;
-          z-index: 2;
-          border: 0;
-          text-align: center;
-        };
+        padding-top: 10px;
       }
+
       @media (min-width: 660px) {
+        .doc-content {
+          padding-top: 20px;
+        }
         .view-container {
           margin-top: 15px;
           max-width: 660px;
@@ -46,17 +43,14 @@
         }
       }
       @media (min-width: 1000px) {
+        .doc-content {
+          padding-top: 60px;
+        }
         .view-container {
           margin-top: 25px;
           max-width: 900px;
           margin-left: auto;
           margin-right: auto;
-        }
-        .doc-content {
-          --quill-editor: {
-            width: 660px;
-            margin: auto;
-          }
         }
       }
     </style>
@@ -65,8 +59,7 @@
         <y-type type="Richtext" name="title" data="{{title}}"></y-type>
         <y-type type="Richtext" name="content" data="{{content}}"></y-type>
       </y-element>
-      <!--doc-title id="title" y-richtext="{{title}}" read-only="{{readOnly}}"></doc-title-->
-      <quill-element id="mainEditArea" read-only="{{readOnly}}" hide-tools="{{readOnly}}" y-richtext="{{content}}" class="doc-content" placeholder="Your content!"></quill-element>
+      <quill-element id="mainEditArea" class="doc-content" theme="bubble" read-only="{{readOnly}}" hide-tools="{{readOnly}}" y-richtext="{{content}}" placeholder="Your content!"></quill-element>
     </paper-card>
   </template>
 
@@ -105,32 +98,6 @@
       },
       _computeReadOnly: function (secret) {
         return secret == null
-      },
-      _computeEditorTopMargin: function () {
-        var height = this.$.mainEditArea.querySelector('.ql-toolbar').getBoundingClientRect().height
-        var editor = this.$.mainEditArea.querySelector('.ql-editor')
-        editor.setAttribute('style', 'margin-top: ' + height + 'px;')
-        this._computeToolbarStickiness()
-      },
-      _computeToolbarStickiness: function () {
-        var toolbar = this.$.mainEditArea.querySelector('.ql-toolbar')
-        var isTitleInView = this.$.viewContainer.getBoundingClientRect().top < 0
-        if (isTitleInView) {
-          toolbar.classList.add('sticky-toolbar')
-        } else {
-          toolbar.classList.remove('sticky-toolbar')
-        }
-      },
-      attached: function () {
-        var self = this
-        this.async(function () {
-          // add scroll event listener to main scroll area
-          document.querySelector('app-header-layout > #contentContainer').onscroll = self._computeToolbarStickiness.bind(self)
-          var callback = self._computeEditorTopMargin.bind(self)
-          window.addEventListener('resize', callback)
-          window.addEventListener('WebComponentsReady', callback)
-          callback()
-        })
       },
       _linkChanged: function () {
         if (this.type != null) {
