@@ -55,7 +55,7 @@
       }
     </style>
     <paper-card id="viewContainer" class="view-container">
-      <y-element connected="{{shown}}" connector-name="webworker"  connector-url="yjs-webworker.js" connector-room="{{roomName}}" connector-auth="{{roomSecret}}" db-name="memory">
+      <y-element connected="{{shown}}" connector-name="webworker"  connector-url="yjs-webworker.js" connector-room="{{getConnectorRoom(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="memory">
         <y-type type="Richtext" name="title" data="{{title}}"></y-type>
         <y-type type="Richtext" name="content" data="{{content}}"></y-type>
       </y-element>
@@ -70,18 +70,21 @@
       properties: {
         roomLink: {
           type: String,
-          notify: true,
-          observer: '_linkChanged'
-        },
-        roomName: String,
-        roomSecret: { 
-          type: String,
           notify: true
+        },
+        doc: {
+          type: Object,
+          notify: true,
+          computed: '_computeDoc(roomLink)'
         },
         readOnly: {
           type: Boolean,
           notify: true,
-          computed: '_computeReadOnly(roomSecret)'
+          computed: '_computeReadOnly(doc)'
+        },
+        type: {
+          type: String,
+          notify: true
         },
         title: {
           type: Object,
@@ -96,10 +99,10 @@
           notify: true
         }
       },
-      _computeReadOnly: function (secret) {
-        return secret == null
+      _computeReadOnly: function (doc) {
+        return doc.secret == null
       },
-      _linkChanged: function () {
+      _computeDoc: function (roomLink) {
         if (this.type != null) {
           this.title.type.unbindQuillAll()
           this.$.title('doc-title').clear()
@@ -108,11 +111,8 @@
           this.content.type.unbindQuillAll()
           this.$.mainEditArea.setText('')
         }
-        // This can instantly exchange this.content.type / this.title.type. This is why we call it now
-        var p = this.parseRoomLink(this.roomLink)
-        this.roomName = p.roomName
-        this.roomSecret = p.secret
-      }
+        return this.parseRoomLink(this.roomLink)
+      },
     })
   </script>
 </dom-module>

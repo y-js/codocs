@@ -14,10 +14,8 @@
           value: connectorUrl
         }
       },
-      /*
-      We encode a room name
-      */
-      getRoomName: function (roomId) {
+      // this is only used when creating a yjs instance in order to get the connector.room
+      getConnectorRoom: function (roomId) {
         if (roomId != null) {
           return btoa(JSON.stringify({
             type: 'room',
@@ -27,17 +25,32 @@
           return null
         }
       },
-      getRoomLink: function (roomId, secret) {
+      createDocumentRoom: function (docType) {
+        var arr = new Uint8Array(20)
+        window.crypto.getRandomValues(arr)
+        var roomSecret = Array.from(arr).map(function (dec) {
+          return dec.toString(16)
+        }).join('')
+        var roomId = md5(roomSecret)
+        return { docType: docType, roomId: roomId, secret: roomSecret }
+      },
+      // set secret = null for read link only
+      // returns an absolute url
+      createRoomLink: function (docType, roomId, secret) {
         return window.location.origin + '/#' + btoa(JSON.stringify({
           roomId: roomId,
-          secret: secret || null
+          secret: secret || null,
+          docType: docType
         }))
       },
+      // parse, given location.hash
+      // returns room definition
       parseRoomLink: function (link) {
         var p = JSON.parse(atob(link))
         return {
-          roomName: btoa(JSON.stringify({ type: 'room', roomId: p.roomId })),
-          secret: p.secret
+          roomId: p.roomId,
+          secret: p.secret,
+          docType: p.docType
         }
       }
     }

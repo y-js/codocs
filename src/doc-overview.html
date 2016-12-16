@@ -75,15 +75,9 @@
       addDocTex: function () {
         this.addDoc('tex')
       },
-      addDoc: function (type) {
-        // generate a room name
-        var arr = new Uint8Array(20)
-        window.crypto.getRandomValues(arr)
-        var roomSecret = Array.from(arr).map(function (dec) {
-          return dec.toString(16)
-        }).join('')
-        var roomId = md5(roomSecret)
-        this.unshift('docs', { type: type, roomId: roomId, secret: roomSecret })
+      addDoc: function (docType) {
+        var doc = this.createDocumentRoom (docType)
+        this.unshift('docs', doc)
         this.$.addDocDialog.close()
       },
       deleteDoc: function (nativeEvent, event) {
