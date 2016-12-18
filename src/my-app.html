@@ -50,6 +50,12 @@
     color: inherit;
     font-weight: normal;
   }
+  .title-element .ql-editor * {
+    display: inline;
+  }
+  .title-element .ql-editor p::before { 
+      content: " ";
+  }
 </style>
 
 <dom-module id="my-app">
@@ -96,12 +102,12 @@
       .title-element {
         border: 0;
         --quill-editor: {
+          max-height: 64px;
           font-family: 'Open Sans', sans-serif;
           font-weight: bold;
           font-size: 21px;
-        };
+        }
       }
-      
     </style>
     <prism-highlighter></prism-highlighter>
     <app-location route="{{route}}" use-hash-as-path></app-location>
