@@ -123,10 +123,11 @@
 
 <dom-module id="doc-view-markdown-toolbar">
   <template>
+    <iron-media-query query="(max-width: 1000px)" query-matches="{{hideBothOption}}"></iron-media-query>
     <paper-tabs doctype="markdown" selected="{{toolbar}}" attr-for-selected="p">
       <paper-tab p="source">Source</paper-tab>
       <paper-tab p="view">View</paper-tab>
-      <paper-tab p="both">Both</paper-tab>
+      <paper-tab p="both" hidden="[[hideBothOption]]">Both</paper-tab>
     </paper-tabs>
   </template>
 
@@ -141,6 +142,16 @@
           type: String,
           value: 'both',
           notify: true
+        },
+        hideBothOption: {
+          type: Boolean,
+          notify: true,
+          observer: '_observeHideBothOption'
+        }
+      },
+      _observeHideBothOption: function (hide) {
+        if (hide && this.toolbar === 'both') {
+          this.toolbar = 'source'
         }
       }
     })
