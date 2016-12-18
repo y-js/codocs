@@ -39,7 +39,8 @@
     "y-text": "^9.2.0",
     "vaadin-split-layout": "^0.1.0",
     "ace-element": "^0.3.0",
-    "prism-element": "PolymerElements/prism-element#^1.2.0"
+    "prism-element": "PolymerElements/prism-element#^1.2.0",
+    "paper-tabs": "PolymerElements/paper-tabs#^1.7.0"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

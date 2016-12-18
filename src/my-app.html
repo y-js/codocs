@@ -16,6 +16,7 @@
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/google-signin/google-signin.html">
 <link rel="import" href="../bower_components/marked-element/marked-element.html">
@@ -139,24 +140,29 @@
               </a>
             </template>
 
-            <template is="dom-if" if="{{isOnline}}">
-              <google-signin
-                on-tap="tapSignoutButton"
-                on-google-signin-success="googleSignin"
-                on-google-signed-out="googleSignout"
-                openid-prompt="select_account"
-                client-id="863221146052-4h694v1mmn93991iq8vm9ub8tap3h7ve.apps.googleusercontent.com"></google-signin>
-            </template>
-            <template is="dom-if" if="{{!isOnline}}">
-              <div style="width: 100px;text-align: center;">Offline</div>
-            </template>
+            <iron-pages selected="{{page}}" attr-for-selected="location">
+              <div location="home">
+                <google-signin
+                  on-tap="tapSignoutButton"
+                  on-google-signin-success="googleSignin"
+                  on-google-signed-out="googleSignout"
+                  openid-prompt="select_account"
+                  client-id="863221146052-4h694v1mmn93991iq8vm9ub8tap3h7ve.apps.googleusercontent.com"></google-signin>
+              </div>
+              <div location="overview">
+              </div>
+              <iron-pages location="view" selected="{{doc.docType}}" attr-for-selected="doctype">
+                <doc-view-markdown-toolbar doctype="markdown" toolbar="{{markdownToolbar}}"></doc-view-markdown-toolbar>
+                <div doctype="richtext"></div>
+              </iron-pages>
+            </iron-pages>
           </app-toolbar>
         </app-header>
 
         <iron-pages selected="{{page}}" attr-for-selected="location">
           <div location="home"><h1>Home</h1></div>
           <doc-overview id="overview" location="overview" shown="{{isOverviewActive(page)}}"></doc-overview>
-          <doc-view location="view" room-link="{{routeData.roomLink}}" title="{{title}}" read-only="{{titleReadOnly}}"></doc-view>
+          <doc-view doc="{{doc}}" location="view" room-link="{{routeData.roomLink}}" title="{{title}}" read-only="{{titleReadOnly}}" markdown-toolbar="{{markdownToolbar}}"></doc-view>
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>
@@ -175,6 +181,10 @@
         return this.page === 'overview'
       },
       properties: {
+        doc: {
+          type: Object,
+          notify: true
+        },
         roomLink: {
           type: String,
           notify: true

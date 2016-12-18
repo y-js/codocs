@@ -41,12 +41,12 @@
       <y-type type="Text" name="content" data="{{content}}"></y-type>
     </y-element>
     <vaadin-split-layout id="splitview">
-      <div id="markdownEditor" style="width: 50%; height: 100%;">
+      <div id="markdownEditor" style="width: 50%; height: 100%;" hidden="{{hideSource}}">
         <paper-card class="view-container">
           <ace-element id="ace" dynamic-height hide-gutter y-text="{{content}}" mode="markdown" wrap="true" font-size="15" print-margin-column="-1"></ace-element>
         </paper-card>
       </div>
-      <div id="markdownView" style="width: 50%; height: 100%;">
+      <div id="markdownView" style="width: 50%; height: 100%;" hidden="{{hideView}}">
         <paper-card class="view-container">
           <marked-element id="marked"></marked-element>
         </paper-card>
@@ -93,10 +93,55 @@
         content: {
           type: Object,
           observer: '_onContentUpdated'
+        },
+        markdownToolbar: {
+          type: String,
+          notify: true
+        },
+        hideSource: {
+          type: Boolean,
+          computed: '_computeHideSource(markdownToolbar)'
+        },
+        hideView: {
+          type: Boolean,
+          computed: '_computeHideView(markdownToolbar)'
         }
+      },
+      _computeHideView: function (toolbar) {
+        return toolbar === 'source'
+      },
+      _computeHideSource: function (toolbar) {
+        return toolbar === 'view'
       },
       _onContentUpdated: function (content) {
         this.$.ace.ace.resize()
+      }
+    })
+  </script>
+</dom-module>
+
+
+<dom-module id="doc-view-markdown-toolbar">
+  <template>
+    <paper-tabs doctype="markdown" selected="{{toolbar}}" attr-for-selected="p">
+      <paper-tab p="source">Source</paper-tab>
+      <paper-tab p="view">View</paper-tab>
+      <paper-tab p="both">Both</paper-tab>
+    </paper-tabs>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'doc-view-markdown-toolbar',
+      behaviors: [],
+      ready: function () {
+      },
+      properties: {
+        toolbar: {
+          type: String,
+          value: 'both',
+          notify: true
+        }
       }
     })
   </script>

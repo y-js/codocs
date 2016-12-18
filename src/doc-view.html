@@ -23,7 +23,7 @@
     </style>
     <iron-pages attr-for-selected="doctype" selected="{{doc.docType}}">
       <doc-view-richtext doctype="richtext" doc="{{doc}}" read-only="{{readOnly}}" title="{{title}}" fixed-height="{{fixedHeight}}"></doc-view-richtext>
-      <doc-view-markdown doctype="markdown" doc="{{doc}}" read-only="{{readOnly}}" title="{{title}}" fixed-height="{{fixedHeight}}"></doc-view-markdown>
+      <doc-view-markdown doctype="markdown" markdown-toolbar="{{markdownToolbar}}" doc="{{doc}}" read-only="{{readOnly}}" title="{{title}}" fixed-height="{{fixedHeight}}"></doc-view-markdown>
     </iron-pages>
   </template>
 
@@ -56,6 +56,10 @@
         },
         content: {
           type: Object,
+          notify: true
+        },
+        markdownToolbar: {
+          type: String,
           notify: true
         }
       },
