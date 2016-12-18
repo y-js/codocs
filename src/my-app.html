@@ -18,6 +18,11 @@
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/google-signin/google-signin.html">
+<link rel="import" href="../bower_components/marked-element/marked-element.html">
+<link rel="import" href="../bower_components/ace-element/ace-element.html">
+<link rel="import" href="../bower_components/vaadin-split-layout/vaadin-split-layout.html">
+<link rel="import" href="../bower_components/prism-element/prism-highlighter.html">
+
 
 <link rel="import" href="../bower_components/clipboard-input/clipboard-input.html">
 <link rel="import" href="../bower_components/quill-element/quill-element.html">
@@ -25,6 +30,7 @@
 <script src="../bower_components/y-memory/y-memory.js"></script>
 <script src="../bower_components/y-webworker/y-webworker.js"></script>
 <script src="../bower_components/y-richtext/y-richtext.js"></script>
+<script src="../bower_components/y-text/y-text.js"></script>
 <script src="../bower_components/js-md5/build/md5.min.js"></script>
 
 <script src="./behaviors.js"></script>
@@ -34,6 +40,8 @@
 <link rel="import" href="doc-card.html">
 <link rel="import" href="doc-title.html">
 <link rel="import" href="doc-view.html">
+<link rel="import" href="doc-view-richtext.html">
+<link rel="import" href="doc-view-markdown.html">
 <link rel="import" href="codocs-logo.html">
 
 <style>
@@ -89,11 +97,12 @@
         --quill-editor: {
           font-family: 'Open Sans', sans-serif;
           font-weight: bold;
-          font-size: 1.5em;
+          font-size: 21px;
         };
       }
       
     </style>
+    <prism-highlighter></prism-highlighter>
     <app-location route="{{route}}" use-hash-as-path></app-location>
     <app-route
         route="{{route}}"
@@ -147,7 +156,7 @@
         <iron-pages selected="{{page}}" attr-for-selected="location">
           <div location="home"><h1>Home</h1></div>
           <doc-overview id="overview" location="overview" shown="{{isOverviewActive(page)}}"></doc-overview>
-          <doc-view location="view" room-link="{{routeData.roomLink}}" shown="{{isViewActive(page)}}" title="{{title}}" read-only="{{titleReadOnly}}"></doc-view>
+          <doc-view location="view" room-link="{{routeData.roomLink}}" title="{{title}}" read-only="{{titleReadOnly}}"></doc-view>
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>
@@ -164,9 +173,6 @@
       is: 'my-app',
       isOverviewActive: function () {
         return this.page === 'overview'
-      },
-      isViewActive: function () {
-        return this.page === 'view'
       },
       properties: {
         roomLink: {

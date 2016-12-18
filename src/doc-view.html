@@ -20,47 +20,11 @@
         display: block;
         width: 100%;
       }
-      .view-container {
-        width: 100%;
-        display: block;
-        margin-bottom: 360px;
-      }
-      .doc-content {
-        min-height: 600px;
-        border: none;
-        padding-top: 10px;
-      }
-
-      @media (min-width: 660px) {
-        .doc-content {
-          padding-top: 20px;
-        }
-        .view-container {
-          margin-top: 15px;
-          max-width: 660px;
-          margin-left: auto;
-          margin-right: auto;
-        }
-      }
-      @media (min-width: 1000px) {
-        .doc-content {
-          padding-top: 60px;
-        }
-        .view-container {
-          margin-top: 25px;
-          max-width: 900px;
-          margin-left: auto;
-          margin-right: auto;
-        }
-      }
     </style>
-    <paper-card id="viewContainer" class="view-container">
-      <y-element connected="{{shown}}" connector-name="webworker"  connector-url="yjs-webworker.js" connector-room="{{getConnectorRoom(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="memory">
-        <y-type type="Richtext" name="title" data="{{title}}"></y-type>
-        <y-type type="Richtext" name="content" data="{{content}}"></y-type>
-      </y-element>
-      <quill-element id="mainEditArea" class="doc-content" theme="bubble" read-only="{{readOnly}}" hide-tools="{{readOnly}}" y-richtext="{{content}}" placeholder="Your content!"></quill-element>
-    </paper-card>
+    <iron-pages attr-for-selected="doctype" selected="{{doc.docType}}">
+      <doc-view-richtext doctype="richtext" doc="{{doc}}" read-only="{{readOnly}}" title="{{title}}" fixed-height="{{fixedHeight}}"></doc-view-richtext>
+      <doc-view-markdown doctype="markdown" doc="{{doc}}" read-only="{{readOnly}}" title="{{title}}" fixed-height="{{fixedHeight}}"></doc-view-markdown>
+    </iron-pages>
   </template>
 
   <script>
@@ -92,10 +56,6 @@
         },
         content: {
           type: Object,
-          notify: true
-        },
-        shown: {
-          type: Boolean,
           notify: true
         }
       },

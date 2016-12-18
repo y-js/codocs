@@ -35,7 +35,11 @@
     "y-webworker": "^0.1.1",
     "paper-fab": "PolymerElements/paper-fab#^1.2.1",
     "my-icons": "dmonad/icons#^0.1.0",
-    "ace-element": "^0.2.1"
+    "marked-element": "PolymerElements/marked-element#^1.2.0",
+    "y-text": "^9.2.0",
+    "vaadin-split-layout": "^0.1.0",
+    "ace-element": "^0.3.0",
+    "prism-element": "PolymerElements/prism-element#^1.2.0"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
