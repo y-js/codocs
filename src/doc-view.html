@@ -24,7 +24,8 @@
     <iron-pages attr-for-selected="doctype" selected="{{doc.docType}}">
       <doc-view-richtext doctype="richtext" doc="{{doc}}" read-only="{{readOnly}}" title="{{title}}" fixed-height="{{fixedHeight}}"></doc-view-richtext>
       <doc-view-markdown doctype="markdown" markdown-toolbar="{{markdownToolbar}}" doc="{{doc}}" read-only="{{readOnly}}" title="{{title}}" fixed-height="{{fixedHeight}}"></doc-view-markdown>
-    </iron-pages>
+      <doc-view-latex doctype="tex" latex-toolbar="{{latexToolbar}}" doc="{{doc}}" read-only="{{readOnly}}" title="{{title}}" fixed-height="{{fixedHeight}}"></doc-view-latex>
+   </iron-pages>
   </template>
 
   <script>
@@ -59,6 +60,10 @@
           notify: true
         },
         markdownToolbar: {
+          type: String,
+          notify: true
+        },
+        latexToolbar: {
           type: String,
           notify: true
         }

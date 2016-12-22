@@ -52,7 +52,7 @@
       <div>
         <paper-icon-button class="document-type-button" icon="document-types:markdown" alt="Create markdown document" title="Create markdown document" on-tap="addDocMarkdown"></paper-icon-button>
         <paper-icon-button class="document-type-button" icon="document-types:richtext" alt="Create rich text document" title="Create rich text document" on-tap="addDocRichtext"></paper-icon-button>
-        <paper-icon-button class="document-type-button" icon="document-types:tex" alt="Create tex document" title="Create tex document" on-tap="addDocTex"></paper-icon-button>
+        <paper-icon-button class="document-type-button" icon="document-types:tex" alt="Create tex document" title="Create LaTeX document" on-tap="addDocLatex"></paper-icon-button>
       </div>
     </paper-dialog>
   </template>
@@ -72,7 +72,7 @@
       addDocRichtext: function () {
         this.addDoc('richtext')
       },
-      addDocTex: function () {
+      addDocLatex: function () {
         this.addDoc('tex')
       },
       addDoc: function (docType) {

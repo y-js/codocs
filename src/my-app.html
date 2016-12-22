@@ -23,7 +23,8 @@
 <link rel="import" href="../bower_components/ace-element/ace-element.html">
 <link rel="import" href="../bower_components/vaadin-split-layout/vaadin-split-layout.html">
 <link rel="import" href="../bower_components/prism-element/prism-highlighter.html">
-
+<link rel="import" href="../bower_components/texlive-element/texlive-element.html">
+<link rel="import" href="../bower_components/pdfjs-element/pdfjs-element.html">
 
 <link rel="import" href="../bower_components/clipboard-input/clipboard-input.html">
 <link rel="import" href="../bower_components/quill-element/quill-element.html">
@@ -43,6 +44,7 @@
 <link rel="import" href="doc-view.html">
 <link rel="import" href="doc-view-richtext.html">
 <link rel="import" href="doc-view-markdown.html">
+<link rel="import" href="doc-view-latex.html">
 <link rel="import" href="codocs-logo.html">
 
 <style>
@@ -159,6 +161,7 @@
               </div>
               <iron-pages location="view" selected="{{doc.docType}}" attr-for-selected="doctype">
                 <doc-view-markdown-toolbar doctype="markdown" toolbar="{{markdownToolbar}}"></doc-view-markdown-toolbar>
+                <doc-view-latex-toolbar doctype="tex" toolbar="{{latexToolbar}}"></doc-view-latex-toolbar>
                 <div doctype="richtext"></div>
               </iron-pages>
             </iron-pages>
@@ -168,7 +171,7 @@
         <iron-pages selected="{{page}}" attr-for-selected="location">
           <div location="home"><h1>Home</h1></div>
           <doc-overview id="overview" location="overview" shown="{{isOverviewActive(page)}}"></doc-overview>
-          <doc-view doc="{{doc}}" location="view" room-link="{{routeData.roomLink}}" title="{{title}}" read-only="{{titleReadOnly}}" markdown-toolbar="{{markdownToolbar}}"></doc-view>
+          <doc-view doc="{{doc}}" location="view" room-link="{{routeData.roomLink}}" title="{{title}}" read-only="{{titleReadOnly}}" markdown-toolbar="{{markdownToolbar}}" latex-toolbar="{{latexToolbar}}"></doc-view>
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>

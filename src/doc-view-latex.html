@@ -1,0 +1,179 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="doc-view-latex">
+  <template>
+    <style include="iron-flex iron-flex-alignment">
+      :host {
+        display: block;
+        width: 100%;
+        background-color: white;
+      }
+      .view-container {
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        margin-top: 20px;
+        margin-bottom: 360px;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-bottom: 20px;
+        padding-top: 10px;
+      }
+      .doc-content {
+        min-height: 700px;
+        border: none;
+        padding-top: 10px;
+      }
+      #splitview {
+        position: fixed;
+        top: 64px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+      pdfjs-element {
+        margin-top: 10px;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 700px;
+        --pdfjs-page: {
+          box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                  0 1px 5px 0 rgba(0, 0, 0, 0.12),
+                  0 3px 1px -2px rgba(0, 0, 0, 0.2);
+          margin: 10px;
+        };
+      }
+    </style>
+    <y-element connector-name="webworker"  connector-url="yjs-webworker.js" connector-room="{{getConnectorRoom(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="memory">
+      <y-type type="Richtext" name="title" data="{{title}}"></y-type>
+      <y-type type="Text" name="content" data="{{content}}"></y-type>
+    </y-element>
+    <vaadin-split-layout id="splitview">
+      <div id="editor" style="width: 50%; height: 100%;" hidden="{{hideSource}}">
+        <paper-card class="view-container">
+          <ace-element id="ace" dynamic-height soft-tabs tab-size="2" hide-gutter y-text="{{content}}" mode="latex" wrap="true" font-size="15" print-margin-column="-1"></ace-element>
+        </paper-card>
+      </div>
+      <div id="view" style="width: 50%; height: 100%;" hidden="{{hideView}}">
+        <texlive-element debug source="{{source}}" pdf="{{pdf}}" ></texlive-element>
+        <pdfjs-element src="{{pdf}}"></pdfjs-element>
+      </div>
+    </vaadin-split-layout>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'doc-view-latex',
+      behaviors: [AppBehaviors.RoomIdentity],
+      ready: function () {
+        var self = this
+        /*
+        this.$.editor.addEventListener('scroll', function () {
+          var proportion = self.$.editor.scrollTop / (self.$.editor.scrollHeight - self.$.editor.clientHeight)
+          self.$.view.scrollTop = proportion * (self.$.view.scrollHeight - self.$.view.clientHeight )
+        })
+        */
+        this.$.view.addEventListener('scroll', function () {
+          var proportion = self.$.view.scrollTop / (self.$.view.scrollHeight - self.$.view.clientHeight)
+          self.$.editor.scrollTop = proportion * (self.$.editor.scrollHeight - self.$.editor.clientHeight)
+        })
+      },
+      properties: {
+        doc: Object,
+        readOnly: Boolean,
+        title: {
+          type: Object,
+          notify: true
+        },
+        fixedHeight: {
+          type: Boolean,
+          notify: true
+        },
+        content: {
+          type: Object,
+          observer: '_onContentUpdated'
+        },
+        latexToolbar: {
+          type: String,
+          notify: true
+        },
+        hideSource: {
+          type: Boolean,
+          computed: '_computeHideSource(latexToolbar)'
+        },
+        hideView: {
+          type: Boolean,
+          computed: '_computeHideView(latexToolbar)'
+        },
+        source: {
+          type: String,
+          notify: true
+        }
+      },
+      _computeHideView: function (toolbar) {
+        return toolbar === 'source'
+      },
+      _computeHideSource: function (toolbar) {
+        return toolbar === 'view'
+      },
+      _onContentUpdated: function (content) {
+        this.$.ace.ace.resize()
+      },
+      compile: function () {
+        this.source = this.$.ace.ace.getValue()
+      }
+    })
+  </script>
+</dom-module>
+
+
+<dom-module id="doc-view-latex-toolbar">
+  <template>
+    <style>
+      :host {
+        display: flex;
+      }
+      #compileBtn {
+        margin-top: auto;
+        margin-bottom: auto;
+      }
+    </style>
+    <iron-media-query query="(max-width: 1000px)" query-matches="{{hideBothOption}}"></iron-media-query>
+    <paper-tabs doctype="tex" selected="{{toolbar}}" attr-for-selected="p">
+      <paper-tab p="source">Source</paper-tab>
+      <paper-tab p="view">View</paper-tab>
+      <paper-tab p="both" hidden="[[hideBothOption]]">Both</paper-tab>
+    </paper-tabs>
+    <paper-icon-button id="compileBtn" on-tap="compile" icon="icons:autorenew"></paper-icon-button>
+  </template>
+  <script>
+    Polymer({
+      is: 'doc-view-latex-toolbar',
+      behaviors: [],
+      ready: function () {
+
+      },
+      properties: {
+        toolbar: {
+          type: String,
+          value: 'both',
+          notify: true
+        },
+        hideBothOption: {
+          type: Boolean,
+          notify: true,
+          observer: '_observeHideBothOption'
+        }
+      },
+      compile: function () {
+        document.querySelector('doc-view-latex').compile()
+      },
+      _observeHideBothOption: function (hide) {
+        if (hide && this.toolbar === 'both') {
+          this.toolbar = 'source'
+        }
+      }
+    })
+  </script>
+</dom-module>
