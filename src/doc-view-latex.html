@@ -36,6 +36,7 @@
         margin-top: 10px;
         margin-left: auto;
         margin-right: auto;
+        margin-bottom: 350px;
         max-width: 700px;
         --pdfjs-page: {
           box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
@@ -56,7 +57,7 @@
         </paper-card>
       </div>
       <div id="view" style="width: 50%; height: 100%;" hidden="{{hideView}}">
-        <texlive-element debug source="{{source}}" pdf="{{pdf}}" ></texlive-element>
+        <texlive-element debug source="{{source}}" pdf="{{pdf}}" running="{{compiling}}" ></texlive-element>
         <pdfjs-element src="{{pdf}}"></pdfjs-element>
       </div>
     </vaadin-split-layout>
@@ -80,6 +81,10 @@
         })
       },
       properties: {
+        compiling: {
+          type: Boolean,
+          observer: '_compilingChanged'
+        },
         doc: Object,
         readOnly: Boolean,
         title: {
@@ -109,6 +114,15 @@
         source: {
           type: String,
           notify: true
+        }
+      },
+      _compilingChanged: function () {
+        var compileBtn = document.querySelector('#compileBtn')
+        if (compileBtn == null) return   
+        if (this.compiling) {
+          compileBtn.classList.add('compile-animation')
+        } else {
+          compileBtn.classList.remove('compile-animation')
         }
       },
       _computeHideView: function (toolbar) {
@@ -166,6 +180,11 @@
         margin-top: auto;
         margin-bottom: auto;
       }
+      .compile-animation {
+        animation:spin 2s linear infinite;
+      }
+      @keyframes spin { 100% { transform:rotate(360deg); } }
+
     </style>
     <iron-media-query query="(max-width: 1000px)" query-matches="{{hideBothOption}}"></iron-media-query>
     <paper-tabs doctype="tex" selected="{{toolbar}}" attr-for-selected="p">
@@ -180,7 +199,6 @@
       is: 'doc-view-latex-toolbar',
       behaviors: [],
       ready: function () {
-
       },
       properties: {
         toolbar: {
