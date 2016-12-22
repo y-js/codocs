@@ -1,6 +1,18 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="shared-styles.html">
 
+<style>
+.doc-content .ql-editor {
+  padding-bottom: 100px;
+}
+@media (min-width: 1000px) {
+  .doc-content .ql-editor {
+    width: 660px;
+    margin: auto;
+  }
+}
+</style>
+
 <dom-module id="doc-view">
   <template>
     <style include="shared-styles">
@@ -8,49 +20,12 @@
         display: block;
         width: 100%;
       }
-      .view-container {
-        width: 100%;
-        display: block;
-      }
-      .doc-content {
-        min-height: 600px;
-        border: none;
-        --quill-toolbar: {
-          position: absolute;
-          width: 100%;
-          z-index: 2;
-          border-top: 1px solid #ccc;
-          border-bottom: 1px solid #ccc;
-          text-align: center;
-        }
-      }
-      @media (min-width: 660px) {
-        .view-container {
-          max-width: 660px;
-          margin: auto;
-        }
-      }
-      @media (min-width: 1000px) {
-        .view-container {
-          max-width: 900px;
-          margin: auto;
-        }
-        .doc-content {
-          --quill-editor: {
-            width: 660px;
-            margin: auto;
-          }
-        }
-      }
     </style>
-    <paper-card class="view-container">
-      <y-element connected="{{shown}}" connector-name="webworker"  connector-url="yjs-webworker.js" connector-room="{{roomName}}" connector-auth="{{roomSecret}}" db-name="memory">
-        <y-type type="Richtext" name="title" data="{{title}}"></y-type>
-        <y-type type="Richtext" name="content" data="{{content}}"></y-type>
-      </y-element>
-      <doc-title id="title" y-richtext="{{title}}" read-only="{{readOnly}}"></doc-title>
-      <quill-element id="mainEditArea" read-only="{{readOnly}}" hide-tools="{{readOnly}}" y-richtext="{{content}}" class="doc-content" placeholder="Your content!"></quill-element>
-    </paper-card>
+    <iron-pages attr-for-selected="doctype" selected="{{doc.docType}}">
+      <doc-view-richtext doctype="richtext" doc="{{doc}}" read-only="{{readOnly}}" title="{{title}}" fixed-height="{{fixedHeight}}"></doc-view-richtext>
+      <doc-view-markdown doctype="markdown" markdown-toolbar="{{markdownToolbar}}" doc="{{doc}}" read-only="{{readOnly}}" title="{{title}}" fixed-height="{{fixedHeight}}"></doc-view-markdown>
+      <doc-view-latex doctype="tex" latex-toolbar="{{latexToolbar}}" doc="{{doc}}" read-only="{{readOnly}}" title="{{title}}" fixed-height="{{fixedHeight}}"></doc-view-latex>
+   </iron-pages>
   </template>
 
   <script>
@@ -60,58 +35,43 @@
       properties: {
         roomLink: {
           type: String,
-          notify: true,
-          observer: '_linkChanged'
-        },
-        roomName: String,
-        roomSecret: { 
-          type: String,
           notify: true
+        },
+        doc: {
+          type: Object,
+          notify: true,
+          computed: '_computeDoc(roomLink)'
         },
         readOnly: {
           type: Boolean,
-          computed: '_computeReadOnly(roomSecret)'
+          notify: true,
+          computed: '_computeReadOnly(doc)'
         },
-        title: Object,
+        type: {
+          type: String,
+          notify: true
+        },
+        title: {
+          type: Object,
+          notify: true
+        },
         content: {
           type: Object,
-          observer: '_computeEditorTopMargin'
+          notify: true
         },
-        shown: {
-          type: Boolean,
+        markdownToolbar: {
+          type: String,
+          notify: true
+        },
+        latexToolbar: {
+          type: String,
           notify: true
         }
       },
-      _computeReadOnly: function (secret) {
-        return secret == null
+      _computeReadOnly: function (doc) {
+        return doc.secret == null
       },
-      _computeEditorTopMargin: function () {
-        var height = this.$.mainEditArea.querySelector('.ql-toolbar').getBoundingClientRect().height
-        var editor = this.$.mainEditArea.querySelector('.ql-editor')
-        editor.setAttribute('style', 'margin-top: ' + height + 'px;')
-        this._computeToolbarStickiness()
-      },
-      _computeToolbarStickiness: function () {
-        var toolbar = this.$.mainEditArea.querySelector('.ql-toolbar')
-        var isTitleInView = this.$.title.getBoundingClientRect().bottom <= 0 
-        if (isTitleInView) {
-          toolbar.classList.add('sticky-toolbar')
-        } else {
-          toolbar.classList.remove('sticky-toolbar')
-        }
-      },
-      attached: function () {
-        var self = this
-        this.async(function () {
-          // add scroll event listener to main scroll area
-          document.querySelector('app-header-layout > #contentContainer').onscroll = self._computeToolbarStickiness.bind(self)
-          var callback = self._computeEditorTopMargin.bind(self)
-          window.addEventListener('resize', callback)
-          window.addEventListener('WebComponentsReady', callback)
-          callback()
-        })
-      },
-      _linkChanged: function () {
+      _computeDoc: function (roomLink) {
         if (this.type != null) {
           this.title.type.unbindQuillAll()
           this.$.title('doc-title').clear()
@@ -120,11 +80,8 @@
           this.content.type.unbindQuillAll()
           this.$.mainEditArea.setText('')
         }
-        // This can instantly exchange this.content.type / this.title.type. This is why we call it now
-        var p = this.parseRoomLink(this.roomLink)
-        this.roomName = p.roomName
-        this.roomSecret = p.secret
-      }
+        return this.parseRoomLink(this.roomLink)
+      },
     })
   </script>
 </dom-module>

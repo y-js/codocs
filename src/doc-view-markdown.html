@@ -1,0 +1,160 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="doc-view-markdown">
+  <template>
+    <style include="iron-flex iron-flex-alignment">
+      :host {
+        display: block;
+        width: 100%;
+        background-color: white;
+      }
+      .view-container {
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        margin-top: 20px;
+        margin-bottom: 360px;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-bottom: 20px;
+        padding-top: 10px;
+      }
+      .doc-content {
+        min-height: 700px;
+        border: none;
+        padding-top: 10px;
+      }
+      #markdownEditor {
+      }
+      #markdownView {
+      }
+      #splitview {
+        position: fixed;
+        top: 64px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+    </style>
+    <y-element connector-name="webworker"  connector-url="yjs-webworker.js" connector-room="{{getConnectorRoom(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="memory">
+      <y-type type="Richtext" name="title" data="{{title}}"></y-type>
+      <y-type type="Text" name="content" data="{{content}}"></y-type>
+    </y-element>
+    <vaadin-split-layout id="splitview">
+      <div id="markdownEditor" style="width: 50%; height: 100%;" hidden="{{hideSource}}">
+        <paper-card class="view-container">
+          <ace-element id="ace" dynamic-height soft-tabs tab-size="2" hide-gutter y-text="{{content}}" mode="markdown" wrap="true" font-size="15" print-margin-column="-1"></ace-element>
+        </paper-card>
+      </div>
+      <div id="markdownView" style="width: 50%; height: 100%;" hidden="{{hideView}}">
+        <paper-card class="view-container">
+          <marked-element id="marked"></marked-element>
+        </paper-card>
+      </div>
+    </vaadin-split-layout>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'doc-view-markdown',
+      behaviors: [AppBehaviors.RoomIdentity],
+      ready: function () {
+        var previousValue = ''
+        setInterval(() => {
+          var value = this.$.ace.ace.getValue()
+          if (value != previousValue) {
+            previousValue = value
+            this.$.marked.markdown = value
+          }
+        }, 100)
+        var self = this
+        /*
+        this.$.markdownEditor.addEventListener('scroll', function () {
+          var proportion = self.$.markdownEditor.scrollTop / (self.$.markdownEditor.scrollHeight - self.$.markdownEditor.clientHeight)
+          self.$.markdownView.scrollTop = proportion * (self.$.markdownView.scrollHeight - self.$.markdownView.clientHeight )
+        })
+        */
+        this.$.markdownView.addEventListener('scroll', function () {
+          var proportion = self.$.markdownView.scrollTop / (self.$.markdownView.scrollHeight - self.$.markdownView.clientHeight)
+          self.$.markdownEditor.scrollTop = proportion * (self.$.markdownEditor.scrollHeight - self.$.markdownEditor.clientHeight)
+        })
+      },
+      properties: {
+        doc: Object,
+        readOnly: Boolean,
+        title: {
+          type: Object,
+          notify: true
+        },
+        fixedHeight: {
+          type: Boolean,
+          notify: true
+        },
+        content: {
+          type: Object,
+          observer: '_onContentUpdated'
+        },
+        markdownToolbar: {
+          type: String,
+          notify: true
+        },
+        hideSource: {
+          type: Boolean,
+          computed: '_computeHideSource(markdownToolbar)'
+        },
+        hideView: {
+          type: Boolean,
+          computed: '_computeHideView(markdownToolbar)'
+        }
+      },
+      _computeHideView: function (toolbar) {
+        return toolbar === 'source'
+      },
+      _computeHideSource: function (toolbar) {
+        return toolbar === 'view'
+      },
+      _onContentUpdated: function (content) {
+        this.$.ace.ace.resize()
+      }
+    })
+  </script>
+</dom-module>
+
+
+<dom-module id="doc-view-markdown-toolbar">
+  <template>
+    <iron-media-query query="(max-width: 1000px)" query-matches="{{hideBothOption}}"></iron-media-query>
+    <paper-tabs doctype="markdown" selected="{{toolbar}}" attr-for-selected="p">
+      <paper-tab p="source">Source</paper-tab>
+      <paper-tab p="view">View</paper-tab>
+      <paper-tab p="both" hidden="[[hideBothOption]]">Both</paper-tab>
+    </paper-tabs>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'doc-view-markdown-toolbar',
+      behaviors: [],
+      ready: function () {
+      },
+      properties: {
+        toolbar: {
+          type: String,
+          value: 'both',
+          notify: true
+        },
+        hideBothOption: {
+          type: Boolean,
+          notify: true,
+          observer: '_observeHideBothOption'
+        }
+      },
+      _observeHideBothOption: function (hide) {
+        if (hide && this.toolbar === 'both') {
+          this.toolbar = 'source'
+        }
+      }
+    })
+  </script>
+</dom-module>

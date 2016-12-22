@@ -96,6 +96,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <link rel="import" href="/src/my-app.html">
     <link href="/fonts/fonts.css" rel="stylesheet">
+    <link href="/src/global-style.css" rel="stylesheet">
     <style>
       body {
         margin: 0;
@@ -104,18 +105,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         min-height: 100vh;
         background-color: #eeeeee;
       }
-      .sticky-toolbar {
-        position: fixed !important;
-        z-index: 1;
-        top: 0;
-        left: 0;
-        right: 0;
-        background-color: white;
-        border-top: 0 !important;
-      }
       .a-unstyle {
         color: inherit;
-        text-decoration: none;
+        text-decoration: none !important;
         pointer-events: auto;
       }
     </style>

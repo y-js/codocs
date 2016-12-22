@@ -11,11 +11,20 @@
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/google-signin/google-signin.html">
+<link rel="import" href="../bower_components/marked-element/marked-element.html">
+<link rel="import" href="../bower_components/ace-element/ace-element.html">
+<link rel="import" href="../bower_components/vaadin-split-layout/vaadin-split-layout.html">
+<link rel="import" href="../bower_components/prism-element/prism-highlighter.html">
+<link rel="import" href="../bower_components/texlive-element/texlive-element.html">
+<link rel="import" href="../bower_components/pdfjs-element/pdfjs-element.html">
 
 <link rel="import" href="../bower_components/clipboard-input/clipboard-input.html">
 <link rel="import" href="../bower_components/quill-element/quill-element.html">
@@ -23,6 +32,7 @@
 <script src="../bower_components/y-memory/y-memory.js"></script>
 <script src="../bower_components/y-webworker/y-webworker.js"></script>
 <script src="../bower_components/y-richtext/y-richtext.js"></script>
+<script src="../bower_components/y-text/y-text.js"></script>
 <script src="../bower_components/js-md5/build/md5.min.js"></script>
 
 <script src="./behaviors.js"></script>
@@ -32,7 +42,23 @@
 <link rel="import" href="doc-card.html">
 <link rel="import" href="doc-title.html">
 <link rel="import" href="doc-view.html">
+<link rel="import" href="doc-view-richtext.html">
+<link rel="import" href="doc-view-markdown.html">
+<link rel="import" href="doc-view-latex.html">
 <link rel="import" href="codocs-logo.html">
+
+<style>
+  .title-element .ql-blank::before {
+    color: inherit;
+    font-weight: normal;
+  }
+  .title-element .ql-editor * {
+    display: inline;
+  }
+  .title-element .ql-editor p::before { 
+      content: " ";
+  }
+</style>
 
 <dom-module id="my-app">
   <template>
@@ -72,11 +98,20 @@
 
       .drawer-list a.iron-selected {
         color: black;
-
         font-weight: bold;
       }
-      
+
+      .title-element {
+        border: 0;
+        --quill-editor: {
+          max-height: 64px;
+          font-family: 'Open Sans', sans-serif;
+          font-weight: bold;
+          font-size: 21px;
+        }
+      }
     </style>
+    <prism-highlighter></prism-highlighter>
     <app-location route="{{route}}" use-hash-as-path></app-location>
     <app-route
         route="{{route}}"
@@ -97,38 +132,46 @@
       </app-drawer-->
 
       <!-- Main content -->
-      <app-header-layout has-scrolling-region>
+      <app-header-layout>
 
         <app-header effects="waterfall">
           <app-toolbar class="layout horizontal">
-            
-            <a href="/" class="a-unstyle flex">
-              <template is="dom-if" if="{{showGoBackButton}}">
+            <template is="dom-if" if="{{showGoBackButton}}">
+              <a href="/" class="a-unstyle">
                 <paper-icon-button icon="arrow-back"></paper-icon-button>
-              </template>
-              <template is="dom-if" if="{{!showGoBackButton}}">
+              </a>
+              <quill-element y-richtext="{{title}}" class="flex title-element" theme="bubble" placeholder="Title of this document.." read-only="{{titleReadOnly}}"></quill-element>
+            </template>
+            <template is="dom-if" if="{{!showGoBackButton}}">
+              <a href="/" class="a-unstyle flex">
                 <codocs-logo></codocs-logo>
-              </template>
-            </a>
+              </a>
+            </template>
 
-            <template is="dom-if" if="{{isOnline}}">
-              <google-signin
-                on-tap="tapSignoutButton"
-                on-google-signin-success="googleSignin"
-                on-google-signed-out="googleSignout"
-                openid-prompt="select_account"
-                client-id="863221146052-4h694v1mmn93991iq8vm9ub8tap3h7ve.apps.googleusercontent.com"></google-signin>
-            </template>
-            <template is="dom-if" if="{{!isOnline}}">
-              <div style="width: 100px;text-align: center;">Offline</div>
-            </template>
+            <iron-pages selected="{{page}}" attr-for-selected="location">
+              <div location="home">
+                <google-signin
+                  on-tap="tapSignoutButton"
+                  on-google-signin-success="googleSignin"
+                  on-google-signed-out="googleSignout"
+                  openid-prompt="select_account"
+                  client-id="863221146052-4h694v1mmn93991iq8vm9ub8tap3h7ve.apps.googleusercontent.com"></google-signin>
+              </div>
+              <div location="overview">
+              </div>
+              <iron-pages location="view" selected="{{doc.docType}}" attr-for-selected="doctype">
+                <doc-view-markdown-toolbar doctype="markdown" toolbar="{{markdownToolbar}}"></doc-view-markdown-toolbar>
+                <doc-view-latex-toolbar doctype="tex" toolbar="{{latexToolbar}}"></doc-view-latex-toolbar>
+                <div doctype="richtext"></div>
+              </iron-pages>
+            </iron-pages>
           </app-toolbar>
         </app-header>
 
         <iron-pages selected="{{page}}" attr-for-selected="location">
           <div location="home"><h1>Home</h1></div>
           <doc-overview id="overview" location="overview" shown="{{isOverviewActive(page)}}"></doc-overview>
-          <doc-view location="view" room-link="{{routeData.roomLink}}" shown="{{isViewActive(page)}}"></doc-view>
+          <doc-view doc="{{doc}}" location="view" room-link="{{routeData.roomLink}}" title="{{title}}" read-only="{{titleReadOnly}}" markdown-toolbar="{{markdownToolbar}}" latex-toolbar="{{latexToolbar}}"></doc-view>
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>
@@ -146,10 +189,11 @@
       isOverviewActive: function () {
         return this.page === 'overview'
       },
-      isViewActive: function () {
-        return this.page === 'view'
-      },
       properties: {
+        doc: {
+          type: Object,
+          notify: true
+        },
         roomLink: {
           type: String,
           notify: true

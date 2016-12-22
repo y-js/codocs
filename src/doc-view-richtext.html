@@ -1,0 +1,67 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="doc-view-richtext">
+  <template>
+    <style include="iron-flex iron-flex-alignment">
+      :host {
+        display: block;
+        width: 100%;
+      }
+      .view-container {
+        width: 100%;
+        display: block;
+        margin-bottom: 360px;
+      }
+      .doc-content {
+        min-height: 600px;
+        border: none;
+        padding-top: 10px;
+      }
+
+      @media (min-width: 660px) {
+        .doc-content {
+          padding-top: 20px;
+        }
+        .view-container {
+          margin-top: 15px;
+          max-width: 660px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+      }
+      @media (min-width: 1000px) {
+        .doc-content {
+          padding-top: 60px;
+        }
+        .view-container {
+          margin-top: 25px;
+          max-width: 900px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+      }
+    </style>
+    <paper-card id="viewContainer" class="view-container">
+      <y-element connector-name="webworker"  connector-url="yjs-webworker.js" connector-room="{{getConnectorRoom(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="memory">
+        <y-type type="Richtext" name="title" data="{{title}}"></y-type>
+        <y-type type="Richtext" name="content" data="{{content}}"></y-type>
+      </y-element>
+      <quill-element id="mainEditArea" class="doc-content" theme="bubble" read-only="{{readOnly}}" hide-tools="{{readOnly}}" y-richtext="{{content}}" placeholder="Your content!"></quill-element>
+    </paper-card>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'doc-view-richtext',
+      behaviors: [AppBehaviors.RoomIdentity],
+      properties: {
+        doc: Object,
+        readOnly: Boolean,
+        title: {
+          type: Object,
+          notify: true
+        }
+      }
+    })
+  </script>
+</dom-module>

@@ -24,49 +24,64 @@
           width: 32%;
         }
       }
-      .add-doc-card {
-        position: relative;
-        cursor: pointer;
-        min-height: 100px;
+      #addDocButton {
+        position: fixed;
+        right: 40px;
+        bottom: 40px;
       }
-      .add-doc-card iron-icon {
-        --iron-icon-height: 60px;
-        --iron-icon-width: 60px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin: -30px 0 0 -30px;
+      .document-type-button {
+        width: 60px;
+        height: 60px;
+        padding: 6px;
+      }
+      #addDocDialog > div {
+        margin: 12px 6px 12px 6px;
+        padding: 0;
       }
     </style>
     <y-element connector-name="webworker" connector-url="yjs-webworker.js" db-name="memory" connector-auth="{{connectorAuth}}" connector-debug connector-room="{{connectorRoom}}">
       <y-array name="docs" data="{{docs}}"></y-array>
     </y-element>
     <div class="layout horizontal wrap">
-      <paper-card id="addDocCard" class="add-doc-card doc-card" on-tap="addDoc">
-        <iron-icon icon="icons:add"></iron-icon>
-      </paper-card>
       <template is="dom-repeat" items="{{docs}}">
         <doc-card class="doc-card" doc="{{item}}" on-delete-doc="deleteDoc" shown="{{shown}}"></doc-card>
       </template>
     </div>
+    <paper-fab id="addDocButton" icon="icons:add" title="Create new document" on-tap="openAddDocDialog"></paper-fab>
+    <paper-dialog id="addDocDialog" no-overlap horizontal-align="right" vertical-align="bottom">
+      <div>
+        <paper-icon-button class="document-type-button" icon="document-types:markdown" alt="Create markdown document" title="Create markdown document" on-tap="addDocMarkdown"></paper-icon-button>
+        <paper-icon-button class="document-type-button" icon="document-types:richtext" alt="Create rich text document" title="Create rich text document" on-tap="addDocRichtext"></paper-icon-button>
+        <paper-icon-button class="document-type-button" icon="document-types:tex" alt="Create tex document" title="Create LaTeX document" on-tap="addDocLatex"></paper-icon-button>
+      </div>
+    </paper-dialog>
   </template>
 
   <script>
     Polymer({
       is: 'doc-overview',
       behaviors: [AppBehaviors.RoomIdentity],
-      addDoc: function () {
-        // generate a room name
-        var arr = new Uint8Array(20)
-        window.crypto.getRandomValues(arr)
-        var roomSecret = Array.from(arr).map(function (dec) {
-          return dec.toString(16)
-        }).join('')
-        var roomId = md5(roomSecret)
-        this.unshift('docs', { type: 'richtext', roomId: roomId, secret: roomSecret })
+      openAddDocDialog: function () {
+        var d = this.$.addDocDialog 
+        d.positionTarget = this.$.addDocButton
+        d.open()
+      },
+      addDocMarkdown: function () {
+        this.addDoc('markdown')
+      },
+      addDocRichtext: function () {
+        this.addDoc('richtext')
+      },
+      addDocLatex: function () {
+        this.addDoc('tex')
+      },
+      addDoc: function (docType) {
+        var doc = this.createDocumentRoom (docType)
+        this.unshift('docs', doc)
+        this.$.addDocDialog.close()
       },
       deleteDoc: function (nativeEvent, event) {
-        this.splice('docs', event.index - 1, 1) // -1 for the addDoc card
+        this.splice('docs', event.index, 1)
       },
       properties: {
         docs: {
