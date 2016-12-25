@@ -27,10 +27,13 @@ module.exports = {
     '/bower_components/texlive.js/pdftex-worker.js',
     '/bower_components/texlive.js/pdftex.js',
     '/bower_components/pdfjs-dist/build/pdf.worker.min.js'
-  ].concat(texliveSources),
+  ], // .concat(texliveSources),
   navigateFallback: '/index.html',
   runtimeCaching: [{
     urlPattern: /\/fonts\/(.*)/,
+    handler: 'cacheFirst'
+  }, {
+    urlPattern: /\/bower_components\/texlive.js\//,
     handler: 'cacheFirst'
   }]
 };
