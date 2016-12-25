@@ -61,14 +61,14 @@
       behaviors: [AppBehaviors.RoomIdentity],
       ready: function () {
         var previousValue = ''
-        setInterval(() => {
-          var value = this.$.ace.ace.getValue()
+        var self = this
+        setInterval(function () {
+          var value = self.$.ace.ace.getValue()
           if (value != previousValue) {
             previousValue = value
-            this.$.marked.markdown = value
+            self.$.marked.markdown = value
           }
         }, 100)
-        var self = this
         /*
         this.$.markdownEditor.addEventListener('scroll', function () {
           var proportion = self.$.markdownEditor.scrollTop / (self.$.markdownEditor.scrollHeight - self.$.markdownEditor.clientHeight)
