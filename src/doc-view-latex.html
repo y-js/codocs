@@ -45,6 +45,9 @@
           margin: 10px;
         };
       }
+      #dialogConfirmMessage {
+        color: red;
+      }
     </style>
     <y-element connector-name="webworker"  connector-url="yjs-webworker.js" connector-room="{{getConnectorRoom(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="memory">
       <y-type type="Richtext" name="title" data="{{title}}"></y-type>
@@ -57,7 +60,17 @@
         </paper-card>
       </div>
       <div id="view" style="width: 50%; height: 100%;" hidden="{{hideView}}">
-        <texlive-element debug source="{{source}}" pdf="{{pdf}}" running="{{compiling}}"></texlive-element>
+        <paper-dialog id="texliveLog" fit-into="view">
+          <h1 id="dialogConfirmMessage">Failed!</h1>
+          <paper-dialog-scrollable>
+            <pre id="logContent" style="margin-top: 0;">
+            </pre>
+          </paper-dialog-scrollable>
+          <div class="buttons">
+            <paper-button dialog-confirm autofocus>Close</paper-button>
+          </div>
+        </paper-dialog>
+        <texlive-element id="texlive" debug source="{{source}}" pdf="{{pdf}}" running="{{compiling}}"></texlive-element>
         <pdfjs-element src="{{pdf}}"></pdfjs-element>
       </div>
     </vaadin-split-layout>
@@ -75,9 +88,21 @@
           self.$.view.scrollTop = proportion * (self.$.view.scrollHeight - self.$.view.clientHeight )
         })
         */
+        this.$.texliveLog.fitInto = this.$.view
         this.$.view.addEventListener('scroll', function () {
           var proportion = self.$.view.scrollTop / (self.$.view.scrollHeight - self.$.view.clientHeight)
           self.$.editor.scrollTop = proportion * (self.$.editor.scrollHeight - self.$.editor.clientHeight)
+        })
+
+        this.$.texlive.addEventListener('log', function log (event) {
+          self.$.logContent.textContent += event.detail + '\n'
+          self.$.texliveLog.refit()
+        })
+        this.$.texlive.addEventListener('error', function () {
+          self.$.dialogConfirmMessage.hidden = false
+        })
+        this.$.texlive.addEventListener('complete', function () {
+          self.$.texliveLog.close()
         })
       },
       properties: {
@@ -118,8 +143,11 @@
       },
       _compilingChanged: function () {
         var compileBtn = document.querySelector('#compileBtn')
-        if (compileBtn == null) return   
+        if (compileBtn == null) return
         if (this.compiling) {
+          this.$.dialogConfirmMessage.hidden = true
+          this.$.logContent.textContent = 'Compiling..\nIf this is your first time compiling, it may take some time to load the dependencies.\n\n'
+          this.$.texliveLog.open()
           compileBtn.classList.add('compile-animation')
         } else {
           compileBtn.classList.remove('compile-animation')
@@ -162,7 +190,13 @@
         }
       },
       compile: function () {
-        this.source = this.$.ace.ace.getValue()
+        var aceVal = this.$.ace.ace.getValue()
+        if (this.source !== aceVal) {
+          this.source = aceVal
+        } else {
+          this.$.texliveLog.open()
+          this.$.texliveLog.fit()
+        }
       }
     })
   </script>
