@@ -36,6 +36,7 @@
         margin-top: 10px;
         margin-left: auto;
         margin-right: auto;
+        margin-bottom: 350px;
         max-width: 700px;
         --pdfjs-page: {
           box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
@@ -43,6 +44,9 @@
                   0 3px 1px -2px rgba(0, 0, 0, 0.2);
           margin: 10px;
         };
+      }
+      #dialogConfirmMessage {
+        color: red;
       }
     </style>
     <y-element connector-name="webworker"  connector-url="yjs-webworker.js" connector-room="{{getConnectorRoom(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="memory">
@@ -56,7 +60,17 @@
         </paper-card>
       </div>
       <div id="view" style="width: 50%; height: 100%;" hidden="{{hideView}}">
-        <texlive-element debug source="{{source}}" pdf="{{pdf}}" ></texlive-element>
+        <paper-dialog id="texliveLog" fit-into="view">
+          <h1 id="dialogConfirmMessage">Failed!</h1>
+          <paper-dialog-scrollable>
+            <pre id="logContent" style="margin-top: 0;">
+            </pre>
+          </paper-dialog-scrollable>
+          <div class="buttons">
+            <paper-button dialog-confirm autofocus>Close</paper-button>
+          </div>
+        </paper-dialog>
+        <texlive-element id="texlive" debug source="{{source}}" pdf="{{pdf}}" running="{{compiling}}"></texlive-element>
         <pdfjs-element src="{{pdf}}"></pdfjs-element>
       </div>
     </vaadin-split-layout>
@@ -74,12 +88,28 @@
           self.$.view.scrollTop = proportion * (self.$.view.scrollHeight - self.$.view.clientHeight )
         })
         */
+        this.$.texliveLog.fitInto = this.$.view
         this.$.view.addEventListener('scroll', function () {
           var proportion = self.$.view.scrollTop / (self.$.view.scrollHeight - self.$.view.clientHeight)
           self.$.editor.scrollTop = proportion * (self.$.editor.scrollHeight - self.$.editor.clientHeight)
         })
+
+        this.$.texlive.addEventListener('log', function log (event) {
+          self.$.logContent.textContent += event.detail + '\n'
+          self.$.texliveLog.refit()
+        })
+        this.$.texlive.addEventListener('error', function () {
+          self.$.dialogConfirmMessage.hidden = false
+        })
+        this.$.texlive.addEventListener('complete', function () {
+          self.$.texliveLog.close()
+        })
       },
       properties: {
+        compiling: {
+          type: Boolean,
+          observer: '_compilingChanged'
+        },
         doc: Object,
         readOnly: Boolean,
         title: {
@@ -111,6 +141,18 @@
           notify: true
         }
       },
+      _compilingChanged: function () {
+        var compileBtn = document.querySelector('#compileBtn')
+        if (compileBtn == null) return
+        if (this.compiling) {
+          this.$.dialogConfirmMessage.hidden = true
+          this.$.logContent.textContent = 'Compiling..\nIf this is your first time compiling, it may take some time to load the dependencies.\n\n'
+          this.$.texliveLog.open()
+          compileBtn.classList.add('compile-animation')
+        } else {
+          compileBtn.classList.remove('compile-animation')
+        }
+      },
       _computeHideView: function (toolbar) {
         return toolbar === 'source'
       },
@@ -119,9 +161,42 @@
       },
       _onContentUpdated: function (content) {
         this.$.ace.ace.resize()
+        if (this.content != null && this.content.type != null && this.content.type.length <= 1) {
+          this.content.type.insert(0,
+              '\\documentclass[12pt]{article}\n'
+            + '\\usepackage{amsmath}\n'
+            + '\\title{$<$texlive-element$>$}\n'
+            + '\\author{Compile \\TeX{} directly in your browser!}\n'
+            + '\\date{\\today}\n'
+            + '\\begin{document}\n'
+            + '  \\maketitle\n'
+            + '  \\TeX{}live.js is a compiler for the \\TeX{}\n'
+            + "  typesetting program created using Mozilla's Emscripten\n"
+            + '  Compiler. It offers programmable desktop\n'
+            + '  publishing features and extensive facilities for\n'
+            + '  automating most aspects of typesetting and desktop\n'
+            + '  publishing, including numbering and cross-referencing,\n'
+            + '  tables and figures, page layout, bibliographies, and\n'
+            + '  much more. It supports \\LaTeX{} which was originally written\n' 
+            + '  in 1984 by Leslie Lamport and has become the dominant method for\n'
+            + '  using \\TeX;\n\n'
+            + '  % This is a comment, not shown in final output.\n'
+            + '  % The following shows typesetting power of LaTeX\n'
+            + '  \\begin{align}\n'
+            + '    E_0 &= mc^2    \\\\\n'
+            + '    E &= \\frac{mc^2}{\\sqrt{1-\\frac{v^2}{c^2}}}\n'
+            + '  \\end{align}\n'
+            + '\\end{document}\n')
+        }
       },
       compile: function () {
-        this.source = this.$.ace.ace.getValue()
+        var aceVal = this.$.ace.ace.getValue()
+        if (this.source !== aceVal) {
+          this.source = aceVal
+        } else {
+          this.$.texliveLog.open()
+          this.$.texliveLog.fit()
+        }
       }
     })
   </script>
@@ -138,6 +213,11 @@
         margin-top: auto;
         margin-bottom: auto;
       }
+      .compile-animation {
+        animation:spin 2s linear infinite;
+      }
+      @keyframes spin { 100% { transform:rotate(360deg); } }
+
     </style>
     <iron-media-query query="(max-width: 1000px)" query-matches="{{hideBothOption}}"></iron-media-query>
     <paper-tabs doctype="tex" selected="{{toolbar}}" attr-for-selected="p">
@@ -152,7 +232,6 @@
       is: 'doc-view-latex-toolbar',
       behaviors: [],
       ready: function () {
-
       },
       properties: {
         toolbar: {

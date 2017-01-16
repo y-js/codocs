@@ -21,10 +21,10 @@
         width: 100%;
       }
     </style>
-    <iron-pages attr-for-selected="doctype" selected="{{doc.docType}}">
-      <doc-view-richtext doctype="richtext" doc="{{doc}}" read-only="{{readOnly}}" title="{{title}}" fixed-height="{{fixedHeight}}"></doc-view-richtext>
-      <doc-view-markdown doctype="markdown" markdown-toolbar="{{markdownToolbar}}" doc="{{doc}}" read-only="{{readOnly}}" title="{{title}}" fixed-height="{{fixedHeight}}"></doc-view-markdown>
-      <doc-view-latex doctype="tex" latex-toolbar="{{latexToolbar}}" doc="{{doc}}" read-only="{{readOnly}}" title="{{title}}" fixed-height="{{fixedHeight}}"></doc-view-latex>
+    <iron-pages id="viewContainer" attr-for-selected="doctype" selected="{{doc.docType}}" on-iron-select="_setDoc">
+      <doc-view-richtext doctype="richtext" read-only="{{readOnly}}" title="{{title}}" fixed-height="{{fixedHeight}}"></doc-view-richtext>
+      <doc-view-markdown doctype="markdown" markdown-toolbar="{{markdownToolbar}}" read-only="{{readOnly}}" title="{{title}}" fixed-height="{{fixedHeight}}"></doc-view-markdown>
+      <doc-view-latex doctype="tex" latex-toolbar="{{latexToolbar}}" read-only="{{readOnly}}" title="{{title}}" fixed-height="{{fixedHeight}}"></doc-view-latex>
    </iron-pages>
   </template>
 
@@ -40,7 +40,8 @@
         doc: {
           type: Object,
           notify: true,
-          computed: '_computeDoc(roomLink)'
+          computed: '_computeDoc(roomLink)',
+          observer: '_setDoc'
         },
         readOnly: {
           type: Boolean,
@@ -82,6 +83,12 @@
         }
         return this.parseRoomLink(this.roomLink)
       },
+      _setDoc: function (_event, event) {
+        var selected = this.$.viewContainer.selectedItem
+        if (selected != null && selected.getAttribute('doctype') === this.doc.docType) {
+          selected.doc = this.doc
+        }
+      }
     })
   </script>
 </dom-module>
