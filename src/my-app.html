@@ -60,7 +60,7 @@
   .title-element .ql-editor * {
     display: inline;
   }
-  .title-element .ql-editor p::before { 
+  .title-element .ql-editor p::before {
       content: " ";
   }
 </style>
@@ -163,6 +163,12 @@
                   client-id="863221146052-4h694v1mmn93991iq8vm9ub8tap3h7ve.apps.googleusercontent.com"></google-signin>
               </div>
               <div location="overview">
+                <google-signin
+                  on-tap="tapSignoutButton"
+                  on-google-signin-success="googleSignin"
+                  on-google-signed-out="googleSignout"
+                  openid-prompt="select_account"
+                  client-id="863221146052-4h694v1mmn93991iq8vm9ub8tap3h7ve.apps.googleusercontent.com"></google-signin>
               </div>
               <iron-pages location="view" selected="{{doc.docType}}" attr-for-selected="doctype">
                 <doc-view-markdown-toolbar doctype="markdown" toolbar="{{markdownToolbar}}"></doc-view-markdown-toolbar>
