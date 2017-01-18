@@ -19,7 +19,7 @@
         }
       }
     </style>
-    <quill-element read-only="{{readOnly}}" hide-tools="{{readOnly}}" disabled="{{disabled}}" y-richtext="{{yRichtext}}" class="card-content doc-title" theme="bubble" placeholder="Title" toolbar='[["link", "image", "video", {"color": []}]]'></quill-element>
+    <quill-element id="title" on-init="quillTitleInit" read-only="{{readOnly}}" hide-tools="{{readOnly}}" disabled="{{disabled}}" y-richtext="{{yRichtext}}" class="card-content doc-title" theme="bubble" placeholder="Title" toolbar='[["link", "image", "video", {"color": []}]]'></quill-element>
   </template>
 
   <script>
@@ -28,7 +28,8 @@
       properties: {
         yRichtext: {
           type: Object,
-          notify: true
+          notify: true,
+          observe: '_yRichtextChanged'
         },
         disabled: {
           type: Boolean,
@@ -39,11 +40,18 @@
           notify: true
         }
       },
+      quillTitleInit: function (event, quill) {
+        quill.keyboard.bindings[13] = []
+        quill.keyboard.addBinding({ key: 13 }, function(range, context) {
+            return
+          }
+        )
+      },
       clear: function () {
         if (this.yRichtext != null) {
           this.yRichtext.unbindQuillAll()
         }
-        this.querySelector('quill-element').setText('')
+        this.$.title.setText('')
       }
     });
   </script>

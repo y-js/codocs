@@ -76,7 +76,7 @@
         }
       },
       attached: function () {
-        this.$.deleteDialog.fitInto = this 
+        this.$.deleteDialog.fitInto = this
       },
       openShareTooltip: function () {
         var d = this.$.shareDialog
@@ -92,7 +92,7 @@
             break
           }
         }
-        this.fire('delete-doc', {index: index})
+        this.fire('delete-doc', { index: index })
       },
       openDeleteDialog: function () {
         this.$.deleteDialog.open()

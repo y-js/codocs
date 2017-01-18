@@ -60,9 +60,6 @@
   .title-element .ql-editor * {
     display: inline;
   }
-  .title-element .ql-editor p::before {
-      content: " ";
-  }
 </style>
 
 <dom-module id="my-app">
@@ -145,7 +142,7 @@
               <a href="/" class="a-unstyle">
                 <paper-icon-button icon="arrow-back"></paper-icon-button>
               </a>
-              <quill-element y-richtext="{{title}}" class="flex title-element" theme="bubble" placeholder="Title of this document.." read-only="{{titleReadOnly}}"></quill-element>
+              <quill-element on-init="quillTitleInit" y-richtext="{{title}}" class="flex title-element" theme="bubble" placeholder="Title of this document.." read-only="{{titleReadOnly}}"></quill-element>
             </template>
             <template is="dom-if" if="{{!showGoBackButton}}">
               <a href="/" class="a-unstyle flex">
@@ -199,6 +196,13 @@
       is: 'my-app',
       isOverviewActive: function () {
         return this.page === 'overview'
+      },
+      quillTitleInit: function (event, quill) {
+        quill.keyboard.bindings[13] = []
+        quill.keyboard.addBinding({ key: 13 }, function(range, context) {
+            return
+          }
+        )
       },
       properties: {
         doc: {
