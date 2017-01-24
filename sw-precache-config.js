@@ -1,11 +1,3 @@
-const fs = require('fs')
-
-var sources = fs.readFileSync('./bower_components/texlive.js/texlive.lst', { encoding: 'utf8' })
-var texliveSources = sources.split('\n').filter(path => {
-  return path[path.length-1] !== '.'
-}).map(path => {
-  return '/bower_components/texlive.js/texlive' + path
-})
 
 module.exports = {
   staticFileGlobs: [
@@ -24,16 +16,14 @@ module.exports = {
     '/bower_components/ace-builds/src-min-noconflict/mode-latex.js',
     '/bower_components/KaTeX/dist/fonts/KaTeX_Main-Regular.woff2',
     '/bower_components/KaTeX/dist/fonts/KaTeX_Main-Italic.woff2',
-    '/bower_components/texlive.js/pdftex-worker.js',
-    '/bower_components/texlive.js/pdftex.js',
     '/bower_components/pdfjs-dist/build/pdf.worker.min.js'
-  ], // .concat(texliveSources),
+  ],
   navigateFallback: '/index.html',
   runtimeCaching: [{
     urlPattern: /\/fonts\/(.*)/,
     handler: 'cacheFirst'
   }, {
-    urlPattern: /\/bower_components\/texlive.js\//,
+    urlPattern: /\/bower_components\/pdftex.js\//,
     handler: 'cacheFirst'
   }]
-};
+}

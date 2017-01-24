@@ -17,6 +17,9 @@
   "devDependencies": {
     "polymer-cli": "^0.17.0"
   },
+  "standard": {
+    "globals": ["AppBehaviors", "Polymer"]
+  },
   "scripts": {
     "test": "polymer test",
     "start": "node server.js",

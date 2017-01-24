@@ -20,7 +20,7 @@
     "fonts/fonts.css",
     "bower_components/ace-builds/src-min-noconflict/mode-latex.js",
     "bower_components/ace-builds/src-min-noconflict/mode-markdown.js",
-    "bower_components/texlive.js/**/*",
+    "bower_components/pdftex.js/pdftex*",
     "bower_components/pdfjs-dist/build/pdf.worker.min.js"
   ]
 }
