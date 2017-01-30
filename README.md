@@ -1,12 +1,14 @@
 # ![logo](https://codocs.y-js.org/images/manifest/icon-32x32.png) CODOCS
 > Collaborative document editing suite
 >
-> [![Open Source Love](https://badges.frapsoft.com/os/v3/open-source.svg?v=103)](https://github.com/y-js/codocs/) [![GitHub stars](https://img.shields.io/github/stars/y-js/codocs.svg?style=flat-square)](https://github.com/y-js/codocs/stargazers)
+> [<img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" height="24" />](https://github.com/y-js/codocs) [![Open Source Love](https://badges.frapsoft.com/os/v3/open-source.svg?v=103)](https://github.com/y-js/codocs/) [![GitHub stars](https://img.shields.io/github/stars/y-js/codocs.svg?style=flat-square)](https://github.com/y-js/codocs/stargazers)
 
 
 Welcome to CODOCS - the offline-first collaborative editing suite for all
-kinds of documents. It is a proof-of-concept, developed in order to show
+kinds of documents. It is a proof-of-concept, developed to show
 the power of collaborative editing on the web.
+
+Sign in order to start collaborating!
 
 Your input is very much appreciated! Please consider to post your feedback, ideas, and bug reports to our user focused feedback system [Requirements Bazaar](), or use good ol' [GitHub Issues](https://github.com/y-js/codocs/issues).
 
@@ -41,5 +43,4 @@ CODOCS and all of its dependencies are open source software. This is what we use
 ### Contribution
 [<img src="http://dbis.rwth-aachen.de/cms/images/logo.jpg" height="48">](https://github.com/rwth-acis) [<img src="http://y-js.org/images/yjs.png" height="48">](https://github.com/y-js/)
 
-CODOCS was developed at the Chair of Computer Science [i5](https://github.com/rwth-acis), RWTH Aachen University. 
-
+CODOCS was developed at the Chair of Computer Science [i5](https://github.com/rwth-acis), RWTH Aachen University.
