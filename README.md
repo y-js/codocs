@@ -1,88 +1,45 @@
-# Polymer App Toolbox - Starter Kit
-
-[![Build Status](https://travis-ci.org/PolymerElements/polymer-starter-kit.svg?branch=master)](https://travis-ci.org/PolymerElements/polymer-starter-kit)
-
-This template is a starting point for building apps using a drawer-based
-layout. The layout is provided by `app-layout` elements.
-
-This template, along with the `polymer-cli` toolchain, also demonstrates use
-of the "PRPL pattern" This pattern allows fast first delivery and interaction with
-the content at the initial route requested by the user, along with fast subsequent
-navigation by pre-caching the remaining components required by the app and
-progressively loading them on-demand as the user navigates through the app.
-
-The PRPL pattern, in a nutshell:
-
-* **Push** components required for the initial route
-* **Render** initial route ASAP
-* **Pre-cache** components for remaining routes
-* **Lazy-load** and progressively upgrade next routes on-demand
-
-### Migrating from Polymer Starter Kit v1?
-
-[Check out our blog post that covers what's changed in PSK2 and how to migrate!](https://www.polymer-project.org/1.0/blog/2016-08-18-polymer-starter-kit-or-polymer-cli.html)
-
-### Setup
-
-##### Prerequisites
-
-Install [polymer-cli](https://github.com/Polymer/polymer-cli):
-
-    npm install -g polymer-cli
-
-##### Initialize project from template
-
-    mkdir my-app
-    cd my-app
-    polymer init starter-kit
-
-### Start the development server
-
-This command serves the app at `http://localhost:8080` and provides basic URL
-routing for the app:
-
-    polymer serve --open
+# ![logo](https://codocs.y-js.org/images/manifest/icon-32x32.png) CODOCS
+> Collaborative document editing suite
+>
+> [![Open Source Love](https://badges.frapsoft.com/os/v3/open-source.svg?v=103)](https://github.com/y-js/codocs/) [![GitHub stars](https://img.shields.io/github/stars/y-js/codocs.svg?style=flat-square)](https://github.com/y-js/codocs/stargazers)
 
 
-### Build
+Welcome to CODOCS - the offline-first collaborative editing suite for all
+kinds of documents. It is a proof-of-concept, developed in order to show
+the power of collaborative editing on the web.
 
-This command performs HTML, CSS, and JS minification on the application
-dependencies, and generates a service-worker.js file with code to pre-cache the
-dependencies based on the entrypoint and fragments specified in `polymer.json`.
-The minified files are output to the `build/unbundled` folder, and are suitable
-for serving from a HTTP/2+Push compatible server.
+Your input is very much appreciated! Please consider to post your feedback, ideas, and bug reports to our user focused feedback system [Requirements Bazaar](), or use good ol' [GitHub Issues](https://github.com/y-js/codocs/issues).
 
-In addition the command also creates a fallback `build/bundled` folder,
-generated using fragment bundling, suitable for serving from non
-H2/push-compatible servers or to clients that do not support H2/Push.
+### Features
 
-    polymer build
+* Offline First
+* Share read-only / read-edit links
+* Organize documents in your personal workspace [(discussion)](https://github.com/y-js/codocs/issues/20)
+* Document Formats:
+  * Markdown
+  * LaTeX
+  * Richtext
+  * *(Image drawing) proposal* [#16](https://github.com/y-js/codocs/issues/16)
+  * *(Markdown+) proposal* [#17](https://github.com/y-js/codocs/issues/17)
 
-### Preview the build
 
-This command serves the minified version of the app at `http://localhost:8080`
-in an unbundled state, as it would be served by a push-compatible server:
+### Build with &#10084; on [GitHub](https://github.com/y-js/codocs/)
 
-    polymer serve build/unbundled
+CODOCS and all of its dependencies are open source software. This is what we use:
 
-This command serves the minified version of the app at `http://localhost:8080`
-generated using fragment bundling:
+* [Yjs](https://github.com/y-js/yjs) - A shared editing framework
+* [Polymer](https://github.com/Polymer/polymer) - Opinionated framework for building Web Components
+* [Quill](https://github.com/quilljs/quill) - Rich text editor
+  * [&lt;quill-element&gt;](https://github.com/dmonad/quill-element)
+* [pdftex.js](https://github.com/dmonad/pdftex.js) - Javascript port of the popular TeX engine
+  * [&lt;texlive-element&gt;](https://github.com/dmonad/texlive-element)
+* [pdf.js](https://github.com/mozilla/pdf.js) - PDF Reader in JavaScript
+  * [&lt;pdfjs-element&gt;](https://github.com/dmonad/pdfjs-element)
+* [ACE editor](https://github.com/ajaxorg/ace) - Text editor for the web
+  * [&lt;ace-element&gt;](https://github.com/dmonad/ace-element)
 
-    polymer serve build/bundled
+### Contribution
+[<img src="http://dbis.rwth-aachen.de/cms/images/logo.jpg" height="48">](https://github.com/rwth-acis) [<img src="http://y-js.org/images/yjs.png" height="48">](https://github.com/y-js/)
 
-### Run tests
+CODOCS was developed at the Chair of Computer Science [i5](https://github.com/rwth-acis), RWTH Aachen University. 
 
-This command will run
-[Web Component Tester](https://github.com/Polymer/web-component-tester) against the
-browsers currently installed on your machine.
-
-    polymer test
-
-### Adding a new view
-
-You can extend the app by adding more views that will be demand-loaded
-e.g. based on the route, or to progressively render non-critical sections
-of the application.  Each new demand-loaded fragment should be added to the
-list of `fragments` in the included `polymer.json` file.  This will ensure
-those components and their dependencies are added to the list of pre-cached
-components (and will have bundles created in the fallback `bundled` build).
