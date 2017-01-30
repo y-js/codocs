@@ -8,6 +8,7 @@
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
@@ -74,11 +75,17 @@
         };
         display: block;
       }
-      app-header {
+      app-toolbar > .codocs-logo {
+        margin-top: 5px;
+      }
+      app-toolbar > google-signin {
+        margin-top: 1px;
+      }
+      app-toolbar {
         color: #fff;
         background-color: var(--app-primary-color);
       }
-      app-header paper-icon-button {
+      app-toolbar paper-icon-button {
         --paper-icon-button-ink-color: white;
       }
 
@@ -112,6 +119,32 @@
           font-size: 21px;
         }
       }
+      .content-container {
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 20px;
+        display: block;
+      }
+      .landing-page {
+        margin-top: 20px;
+        margin-bottom: 360px;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-bottom: 20px;
+        padding-top: 10px;
+      }
+      .info-card {
+        margin-left: auto;
+        background-color: yellow;
+        position: absolute;
+        right: 0;
+        top: 64px;
+        z-index: 1;
+        padding: 3px 7px;
+        border-bottom-left-radius: 10px;
+        background-color: #fff785;
+      }
     </style>
     <prism-highlighter></prism-highlighter>
     <app-location route="{{route}}" use-hash-as-path></app-location>
@@ -135,49 +168,57 @@
 
       <!-- Main content -->
       <app-header-layout>
-
-        <app-header effects="waterfall">
-          <app-toolbar class="layout horizontal">
-            <template is="dom-if" if="{{showGoBackButton}}">
-              <a href="/" class="a-unstyle">
-                <paper-icon-button icon="arrow-back"></paper-icon-button>
-              </a>
-              <quill-element on-init="quillTitleInit" y-richtext="{{title}}" class="flex title-element" theme="bubble" placeholder="Title of this document.." read-only="{{titleReadOnly}}"></quill-element>
-            </template>
-            <template is="dom-if" if="{{!showGoBackButton}}">
-              <a href="/" class="a-unstyle flex">
-                <codocs-logo></codocs-logo>
-              </a>
-            </template>
-
-            <iron-pages selected="{{page}}" attr-for-selected="location">
-              <div location="home">
-                <google-signin
-                  on-tap="tapSignoutButton"
-                  on-google-signin-success="googleSignin"
-                  on-google-signed-out="googleSignout"
-                  openid-prompt="select_account"
-                  client-id="863221146052-4h694v1mmn93991iq8vm9ub8tap3h7ve.apps.googleusercontent.com"></google-signin>
-              </div>
-              <div location="overview">
-                <google-signin
-                  on-tap="tapSignoutButton"
-                  on-google-signin-success="googleSignin"
-                  on-google-signed-out="googleSignout"
-                  openid-prompt="select_account"
-                  client-id="863221146052-4h694v1mmn93991iq8vm9ub8tap3h7ve.apps.googleusercontent.com"></google-signin>
-              </div>
-              <iron-pages location="view" selected="{{doc.docType}}" attr-for-selected="doctype">
-                <doc-view-markdown-toolbar doctype="markdown" toolbar="{{markdownToolbar}}"></doc-view-markdown-toolbar>
-                <doc-view-latex-toolbar doctype="tex" toolbar="{{latexToolbar}}"></doc-view-latex-toolbar>
-                <div doctype="richtext"></div>
-              </iron-pages>
+        <iron-pages selected="{{page}}" attr-for-selected="location">
+          <app-toolbar location="home" class="layout horizontal">
+            <div main-title>Welcome!
+            </div>
+            <google-signin
+              on-tap="tapSignoutButton"
+              on-google-signin-success="googleSignin"
+              on-google-signed-out="googleSignout"
+              openid-prompt="select_account"
+              client-id="863221146052-4h694v1mmn93991iq8vm9ub8tap3h7ve.apps.googleusercontent.com"></google-signin>
+          </app-toolbar>
+          <app-toolbar location="overview" class="layout horizontal">
+            <a href="/" class="a-unstyle flex codocs-logo">
+              <codocs-logo></codocs-logo>
+            </a>
+            <google-signin
+              on-tap="tapSignoutButton"
+              on-google-signin-success="googleSignin"
+              on-google-signed-out="googleSignout"
+              openid-prompt="select_account"
+              client-id="863221146052-4h694v1mmn93991iq8vm9ub8tap3h7ve.apps.googleusercontent.com"></google-signin>
+          </app-toolbar>
+          <app-toolbar location="view" class="layout horizontal">
+            <a href="/" class="a-unstyle">
+              <paper-icon-button icon="arrow-back"></paper-icon-button>
+            </a>
+            <quill-element on-init="quillTitleInit" y-richtext="{{title}}" class="flex title-element" theme="bubble" placeholder="Title of this document.." read-only="{{titleReadOnly}}"></quill-element>
+            <iron-pages selected="{{doc.docType}}" attr-for-selected="doctype">
+              <doc-view-markdown-toolbar doctype="markdown" toolbar="{{markdownToolbar}}"></doc-view-markdown-toolbar>
+              <doc-view-latex-toolbar doctype="tex" toolbar="{{latexToolbar}}"></doc-view-latex-toolbar>
+              <div doctype="richtext"></div>
             </iron-pages>
           </app-toolbar>
-        </app-header>
+        </iron-pages>
 
         <iron-pages selected="{{page}}" attr-for-selected="location">
-          <div location="home"><h1>Home</h1></div>
+          <div location="home">
+            <iron-ajax
+              auto
+              url="/README.md"
+              handle-as="text"
+              on-response="_handleLandingpageDocument"></iron-ajax>
+            <div class="info-card">
+              <i>Sign in</i> to start collaborating!
+            </div>
+            <div class="content-container">
+              <paper-card class="landing-page">
+                <marked-element id="landingPageContent"></marked-element>
+              </paper-card>
+            </div>
+          </div>
           <doc-overview id="overview" location="overview" shown="{{isOverviewActive(page)}}"></doc-overview>
           <doc-view doc="{{doc}}" location="view" room-link="{{routeData.roomLink}}" title="{{title}}" read-only="{{titleReadOnly}}" markdown-toolbar="{{markdownToolbar}}" latex-toolbar="{{latexToolbar}}"></doc-view>
         </iron-pages>
@@ -240,6 +281,9 @@
       observers: [
         '_updatePage(routeData.roomLink)'
       ],
+      _handleLandingpageDocument: function (event) {
+        this.$.landingPageContent.markdown = event.detail.response
+      },
       _isOnlineChanged: function () {
         if (!this.isOnline && localStorage.overviewRoomId != null) {
           this.isAuthorized = true

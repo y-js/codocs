@@ -11,6 +11,7 @@
   ],
   "includeDependencies": [
     "manifest.json",
+    "README.md",
     "bower_components/webcomponentsjs/webcomponents-lite.min.js",
     "bower_components/yjs/y.js",
     "bower_components/y-memory/y-memory.js",

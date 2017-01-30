@@ -43,7 +43,8 @@
     "paper-tabs": "PolymerElements/paper-tabs#^1.7.0",
     "pdfjs-element": "^0.1.0",
     "paper-dialog-scrollable": "PolymerElements/paper-dialog-scrollable#^1.1.5",
-    "texlive-element": "^0.2.1"
+    "texlive-element": "^0.2.1",
+    "iron-ajax": "PolymerElements/iron-ajax#^1.4.3"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

@@ -8,9 +8,7 @@ Welcome to CODOCS - the offline-first collaborative editing suite for all
 kinds of documents. It is a proof-of-concept, developed to show
 the power of collaborative editing on the web.
 
-Sign in order to start collaborating!
-
-Your input is very much appreciated! Please consider to post your feedback, ideas, and bug reports to our user focused feedback system [Requirements Bazaar](), or use good ol' [GitHub Issues](https://github.com/y-js/codocs/issues).
+Your input is very much appreciated! Please consider to post your feedback, ideas, and bug reports to our user focused feedback system [Requirements Bazaar](https://requirements-bazaar.org/projects/132/categories/530), or use good ol' [GitHub Issues](https://github.com/y-js/codocs/issues).
 
 ### Features
 
