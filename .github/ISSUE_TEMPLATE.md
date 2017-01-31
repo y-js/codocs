@@ -1,33 +1,29 @@
-<!-- Instructions: https://github.com/PolymerElements/polymer-starter-kit/CONTRIBUTING.md#filing-issues -->
+<!--
+  Please check for existing / similar issues before you open a new one.
+
+  Use GitHub issues for bug reports.
+
+  We prefer Requirements Bazaar for general discussions, and feature requests
+  (https://requirements-bazaar.org/projects/132/categories/530)
+-->
+
 ### Description
-<!-- Example: The `paper-foo` element causes the page to turn pink when clicked. -->
+The user interface freezes when pasting 100k lines of text.
 
 ### Expected outcome
-
-<!-- Example: The page stays the same color. -->
+The user interface does not freeze
 
 ### Actual outcome
-
-<!-- Example: The page turns pink. -->
-
-### Live Demo
-<!-- Example: https://jsbin.com/cagaye/edit?html,output -->
+The user interface freezes for 10 seconds.
 
 ### Steps to reproduce
-
-<!-- Example
-1. Put a `paper-foo` element in the page.
-2. Open the page in a web browser.
-3. Click the `paper-foo` element.
--->
+* Visit [https://codocs.y-js.org](https://codocs.y-js.org)
+* Create a Markdown document
+* Past 100k lines of text
 
 ### Browsers Affected
 <!-- Check all that apply -->
-- [ ] Chrome
+- [x] Chrome
 - [ ] Firefox
-- [ ] Safari 9
-- [ ] Safari 8
-- [ ] Safari 7
+- [ ] Safari
 - [ ] Edge
-- [ ] IE 11
-- [ ] IE 10
