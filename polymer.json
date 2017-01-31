@@ -1,7 +1,9 @@
 {
   "entrypoint": "index.html",
   "shell": "src/my-app.html",
-  "fragments": [],
+  "fragments": [
+    "README.md"
+  ],
   "sourceGlobs": [
    "src/**/*",
    "images/**/*",
@@ -11,17 +13,18 @@
   ],
   "includeDependencies": [
     "manifest.json",
-    "README.md",
+    "fonts/fonts.css",
     "bower_components/webcomponentsjs/webcomponents-lite.min.js",
     "bower_components/yjs/y.js",
     "bower_components/y-memory/y-memory.js",
     "bower_components/y-indexeddb/y-indexeddb.js",
     "bower_components/y-websockets-client/y-websockets-client.js",
     "bower_components/y-webworker/yjs-webworker-service.js",
-    "fonts/fonts.css",
     "bower_components/ace-builds/src-min-noconflict/mode-latex.js",
     "bower_components/ace-builds/src-min-noconflict/mode-markdown.js",
-    "bower_components/pdftex.js/pdftex*",
-    "bower_components/pdfjs-dist/build/pdf.worker.min.js"
+    "bower_components/KaTeX/dist/fonts/KaTeX_Main-Regular.woff2",
+    "bower_components/KaTeX/dist/fonts/KaTeX_Main-Italic.woff2",
+    "bower_components/pdfjs-dist/build/pdf.worker.min.js",
+    "bower_components/pdftex.js/pdftex*"
   ]
 }
