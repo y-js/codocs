@@ -18,11 +18,19 @@ module.exports = {
     urlPattern: /\/bower_components\//,
     handler: 'cacheFirst'
   }, {
-    urlPattern: /./,
-    handler: 'fastest',
+    urlPattern: /^https:\/\//,
+    handler: 'cacheFirst',
     options: {
       cache: {
-        maxAgeSeconds: 60
+        maxAgeSeconds: 60*30
+      }
+    }
+  }, {
+    urlPattern: /^http:\/\//,
+    handler: 'cacheFirst',
+    options: {
+      cache: {
+        maxAgeSeconds: 60*30
       }
     }
   }]
