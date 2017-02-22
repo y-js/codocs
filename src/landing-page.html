@@ -1,0 +1,57 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/marked-element/marked-element.html">
+
+<dom-module id="landing-page">
+  <template>
+    <style>
+      .content-container {
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 40px;
+        display: block;
+      }
+      .landing-page {
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-bottom: 20px;
+        padding-top: 10px;
+      }
+      .info-card {
+        margin-top: 0px;
+        margin-left: auto;
+        background-color: yellow;
+        position: absolute;
+        right: 0;
+        top: 64px;
+        z-index: 1;
+        padding: 3px 7px;
+        border-bottom-left-radius: 10px;
+        background-color: #fff785;
+      }
+    </style>
+    <iron-ajax
+      auto
+      url="/README.md"
+      handle-as="text"
+      on-response="_handleLandingpageDocument"></iron-ajax>
+    <div class="info-card">
+      <i>Sign in</i> to start collaborating!
+    </div>
+    <div class="content-container">
+      <paper-card class="landing-page">
+        <marked-element id="landingPageContent"></marked-element>
+      </paper-card>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'landing-page',
+      properties: {
+      },
+      _handleLandingpageDocument: function (event) {
+        this.$.landingPageContent.markdown = event.detail.response
+      }
+    })
+  </script>
+</dom-module>
