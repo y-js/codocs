@@ -21,10 +21,10 @@
         width: 100%;
       }
     </style>
-    <iron-pages id="viewContainer" attr-for-selected="doctype" selected="{{doc.docType}}" on-iron-select="_setDoc">
-      <doc-view-richtext doctype="richtext" read-only="{{readOnly}}" title="{{title}}" fixed-height="{{fixedHeight}}"></doc-view-richtext>
-      <doc-view-markdown doctype="markdown" markdown-toolbar="{{markdownToolbar}}" read-only="{{readOnly}}" title="{{title}}" fixed-height="{{fixedHeight}}"></doc-view-markdown>
-      <doc-view-latex doctype="tex" latex-toolbar="{{latexToolbar}}" read-only="{{readOnly}}" title="{{title}}" fixed-height="{{fixedHeight}}"></doc-view-latex>
+    <iron-pages id="viewContainer" attr-for-selected="doctype" selected="{{selectedView}}">
+      <doc-view-richtext doctype="richtext" on-title-changed="_titleChanged" read-only="{{readOnly}}" fixed-height="{{fixedHeight}}"></doc-view-richtext>
+      <doc-view-markdown doctype="markdown" on-title-changed="_titleChanged" markdown-toolbar="{{markdownToolbar}}" read-only="{{readOnly}}" fixed-height="{{fixedHeight}}"></doc-view-markdown>
+      <doc-view-latex doctype="tex" on-title-changed="_titleChanged" latex-toolbar="{{latexToolbar}}" read-only="{{readOnly}}" fixed-height="{{fixedHeight}}"></doc-view-latex>
    </iron-pages>
   </template>
 
@@ -41,22 +41,18 @@
           type: Object,
           notify: true,
           computed: '_computeDoc(roomLink)',
-          observer: '_setDoc'
+          observer: '_docChanged'
+        },
+        selectedView: {
+          type: String,
+          notify: true
         },
         readOnly: {
           type: Boolean,
           notify: true,
           computed: '_computeReadOnly(doc)'
         },
-        type: {
-          type: String,
-          notify: true
-        },
         title: {
-          type: Object,
-          notify: true
-        },
-        content: {
           type: Object,
           notify: true
         },
@@ -69,24 +65,43 @@
           notify: true
         }
       },
+      _titleChanged: function (event, title){
+        this.title = title.value
+      },
+      observers: ['_docChanged(doc)'],
+      _docChanged: function (doc) {
+        // write new content
+        var view = this.$.viewContainer.querySelector(`[doctype=${doc.docType}]`)
+        if (Polymer.isInstance(view)) {
+          this._setDocToView(view)
+          this.selectedView = doc.docType
+        } else {
+          var self = this
+          Polymer.Base.importHref(`src/doc-view-${doc.docType}.html`, function () {
+            self._setDocToView(view)
+            self.selectedView = doc.docType
+          })
+        }
+      },
       _computeReadOnly: function (doc) {
         return doc.secret == null
       },
       _computeDoc: function (roomLink) {
-        if (this.type != null) {
-          this.title.type.unbindQuillAll()
-          this.$.title('doc-title').clear()
-        }
-        if (this.content != null) {
-          this.content.type.unbindQuillAll()
-          this.$.mainEditArea.setText('')
-        }
         return this.parseRoomLink(this.roomLink)
       },
-      _setDoc: function (_event, event) {
-        var selected = this.$.viewContainer.selectedItem
-        if (selected != null && selected.getAttribute('doctype') === this.doc.docType) {
-          selected.doc = this.doc
+      _setDocToView: function (view) {
+        // clear all existing content
+        if (this.title != null) {
+          this.title.type.unbindQuillAll()
+        }
+        var views = this.$.viewContainer.children
+        for (var i = 0; i < views.length; i++) {
+          var v = views[i]
+          if (v.clear != null) { v.clear() }
+        }
+        // write new content
+        if (view.getAttribute('doctype') === this.doc.docType) {
+          view.doc = this.doc
         }
       }
     })

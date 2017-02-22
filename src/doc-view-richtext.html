@@ -59,12 +59,19 @@
         readOnly: Boolean,
         title: {
           type: Object,
-          notify: true
+          notify: true,
+          observe: '_titleChanged'
         },
         content: {
           type: Object,
           notify: true
         }
+      },
+      _titleChanged: function (title) {
+        this.fire('title-changed', title)
+      },
+      clear: function () {
+        // TODO
       }
     })
   </script>

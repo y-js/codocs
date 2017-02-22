@@ -21,12 +21,8 @@
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="../bower_components/google-signin/google-signin.html">
-<link rel="import" href="../bower_components/marked-element/marked-element.html">
-<link rel="import" href="../bower_components/ace-element/ace-element.html">
 <link rel="import" href="../bower_components/vaadin-split-layout/vaadin-split-layout.html">
 <link rel="import" href="../bower_components/prism-element/prism-highlighter.html">
-<link rel="import" href="../bower_components/texlive-element/texlive-element.html">
-<link rel="import" href="../bower_components/pdfjs-element/pdfjs-element.html">
 
 <link rel="import" href="../bower_components/clipboard-input/clipboard-input.html">
 <link rel="import" href="../bower_components/quill-element/quill-element.html">
@@ -41,12 +37,13 @@
 
 <link rel="import" href="my-icons.html">
 <link rel="import" href="doc-overview.html">
+<!--link rel="import" href="landing-page.html"-->
 <link rel="import" href="doc-card.html">
 <link rel="import" href="doc-title.html">
 <link rel="import" href="doc-view.html">
-<link rel="import" href="doc-view-richtext.html">
+<!--link rel="import" href="doc-view-richtext.html">
 <link rel="import" href="doc-view-markdown.html">
-<link rel="import" href="doc-view-latex.html">
+<link rel="import" href="doc-view-latex.html"-->
 <link rel="import" href="codocs-logo.html">
 
 
@@ -119,32 +116,6 @@
           font-size: 21px;
         }
       }
-      .content-container {
-        max-width: 700px;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 20px;
-        display: block;
-      }
-      .landing-page {
-        margin-top: 20px;
-        margin-bottom: 360px;
-        padding-left: 20px;
-        padding-right: 20px;
-        padding-bottom: 20px;
-        padding-top: 10px;
-      }
-      .info-card {
-        margin-left: auto;
-        background-color: yellow;
-        position: absolute;
-        right: 0;
-        top: 64px;
-        z-index: 1;
-        padding: 3px 7px;
-        border-bottom-left-radius: 10px;
-        background-color: #fff785;
-      }
     </style>
     <prism-highlighter></prism-highlighter>
     <app-location route="{{route}}" use-hash-as-path></app-location>
@@ -204,21 +175,7 @@
         </iron-pages>
 
         <iron-pages selected="{{page}}" attr-for-selected="location">
-          <div location="home">
-            <iron-ajax
-              auto
-              url="/README.md"
-              handle-as="text"
-              on-response="_handleLandingpageDocument"></iron-ajax>
-            <div class="info-card">
-              <i>Sign in</i> to start collaborating!
-            </div>
-            <div class="content-container">
-              <paper-card class="landing-page">
-                <marked-element id="landingPageContent"></marked-element>
-              </paper-card>
-            </div>
-          </div>
+          <landing-page id="landingPage" location="home"></landing-page>
           <doc-overview id="overview" location="overview" shown="{{isOverviewActive(page)}}"></doc-overview>
           <doc-view doc="{{doc}}" location="view" room-link="{{routeData.roomLink}}" title="{{title}}" read-only="{{titleReadOnly}}" markdown-toolbar="{{markdownToolbar}}" latex-toolbar="{{latexToolbar}}"></doc-view>
         </iron-pages>
@@ -263,10 +220,6 @@
           notify: true,
           observer: '_updatePage'
         },
-        isAuthorized: {
-          type: Boolean,
-          observer: '_updatePage'
-        },
         isOnline: {
           type: Boolean,
           notify: true,
@@ -281,13 +234,9 @@
       observers: [
         '_updatePage(routeData.roomLink)'
       ],
-      _handleLandingpageDocument: function (event) {
-        this.$.landingPageContent.markdown = event.detail.response
-      },
       _isOnlineChanged: function () {
-        if (!this.isOnline && localStorage.overviewRoomId != null) {
-          this.isAuthorized = true
-          this.$.overview.setGoogleIdToken(null, localStorage.overviewRoomId)
+        if (!this.isOnline && localStorage.auth != null) {
+          this.$.overview.checkAuth()
         }
       },
       _showGoBackButton: function (page) {
@@ -299,55 +248,37 @@
           this.roomLink = id
           this.page = 'view'
         } else {
-          if (this.isAuthorized) {
+          if (localStorage.auth != null) {
             this.page = 'overview'
           } else {
             this.page = 'home'
+            if (!Polymer.isInstance(this.$.landingPage)) {
+              debugger
+              Polymer.Base.importHref(`src/landing-page.html`)
+            }
           }
         }
       },
       googleSignin: function () {
-        this.isAuthorized = true
         var q = gapi.auth2.getAuthInstance().currentUser.get()
         var idToken = q.getAuthResponse().id_token
         var roomId = q.getId()
-        localStorage.overviewRoomId = roomId
-        this.$.overview.setGoogleIdToken(idToken, roomId)
+        localStorage.auth = JSON.stringify({ roomId: roomId, idToken: idToken })
+        this.$.overview.checkAuth()
+        this._updatePage()
       },
       tapSignoutButton: function () {
-        if (this.isAuthorized) {
-          this.isAuthorized = false
+        if (localStorage.auth != null) {
           // if the user actively signs out, we clean up everything
           // this is why we check if the user was already signed in
-          delete localStorage.overviewRoomId
+          delete localStorage.auth
           // close all y-elements
           var yElements = document.querySelectorAll('y-element')
           var promises = []
           for (var i = yElements.length - 1; i >= 0; i--) {
             promises.push(yElements[i].close())
           }
-          Promise.all(promises).then(function () {
-            // remove all databases
-            for (var i = localStorage.length - 1; i >= 0; i--) {
-              try {
-                (function () {
-                  var val = JSON.parse(localStorage.key(i))
-                  if (val[0] === 'Yjs_indexeddb') {
-                    // val[1] is a indexeddb namespace
-                    var request = window.indexedDB.deleteDatabase(val[1])
-                    request.onerror = function (event) {
-                      console.info("Error deleting indexeddb database.", event)
-                    }
-                    localStorage.removeItem(JSON.stringify(['__YJS__', val[1]]))
-                    localStorage.removeItem(JSON.stringify(['Yjs_indexeddb', val[1]]))
-                  }
-                })()
-              } catch (e) {
-                continue
-              }
-            }
-            window.location.reload()
-          })
+          this._updatePage()
         }
       },
       googleSignout: function () {

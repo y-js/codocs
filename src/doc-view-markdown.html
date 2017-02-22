@@ -1,4 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/ace-element/ace-element.html">
+<link rel="import" href="../bower_components/marked-element/marked-element.html">
 
 <dom-module id="doc-view-markdown">
   <template>
@@ -37,7 +39,7 @@
         bottom: 0;
       }
     </style>
-    <y-element connector-name="webworker"  connector-url="yjs-webworker.js" connector-room="{{getConnectorRoom(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="memory">
+    <y-element id="yElement" connector-name="webworker"  connector-url="yjs-webworker.js" connector-room="{{getConnectorRoom(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="memory">
       <y-type type="Richtext" name="title" data="{{title}}"></y-type>
       <y-type type="Text" name="content" data="{{content}}"></y-type>
     </y-element>
@@ -85,7 +87,8 @@
         readOnly: Boolean,
         title: {
           type: Object,
-          notify: true
+          notify: true,
+          observe: '_titleChanged'
         },
         fixedHeight: {
           type: Boolean,
@@ -107,6 +110,13 @@
           type: Boolean,
           computed: '_computeHideView(markdownToolbar)'
         }
+      },
+      clear: function () {
+        this.$.yElement.close()
+        this.$.ace.ace.setValue('')
+      },
+      _titleChanged: function (title) {
+        this.fire('title-changed', title)
       },
       _computeHideView: function (toolbar) {
         return toolbar === 'source'

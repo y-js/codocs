@@ -2,7 +2,10 @@
   "entrypoint": "index.html",
   "shell": "src/my-app.html",
   "fragments": [
-    "README.md"
+    "README.md",
+    "src/doc-view-latex.html",
+    "src/doc-view-richtext.html",
+    "src/doc-view-markdown.html"
   ],
   "sourceGlobs": [
    "src/**/*",

@@ -62,7 +62,7 @@
       is: 'doc-overview',
       behaviors: [AppBehaviors.RoomIdentity],
       openAddDocDialog: function () {
-        var d = this.$.addDocDialog 
+        var d = this.$.addDocDialog
         d.positionTarget = this.$.addDocButton
         d.open()
       },
@@ -94,12 +94,13 @@
           notify: true
         }
       },
-      setGoogleIdToken: function (idToken, roomId) {
-        if (this.connectorAuth !== idToken && idToken != null) {
-          this.connectorAuth = idToken
+      checkAuth: function () {
+        var auth = JSON.parse(localStorage.auth)
+        if (this.connectorAuth !== auth.idToken && auth.idToken != null) {
+          this.connectorAuth = auth.idToken
         }
-        if (roomId != null && (this.connectorRoom == null || roomId !== JSON.parse(atob(this.connectorRoom)).roomId)) {
-          this.connectorRoom = btoa(JSON.stringify({ type: 'overview', roomId: roomId}))
+        if (auth.roomId != null && (this.connectorRoom == null || auth.roomId !== JSON.parse(atob(this.connectorRoom)).roomId)) {
+          this.connectorRoom = btoa(JSON.stringify({ type: 'overview', roomId: auth.roomId}))
         }
       }
     });

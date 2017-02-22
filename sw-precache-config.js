@@ -18,6 +18,9 @@ module.exports = {
     urlPattern: /\/bower_components\//,
     handler: 'cacheFirst'
   }, {
+    urlPattern: /\/src\//,
+    handler: 'cacheFirst'
+  }, {
     urlPattern: /^https:\/\//,
     handler: 'cacheFirst',
     options: {
