@@ -15,18 +15,21 @@
     "yjs": "^12.1.0"
   },
   "devDependencies": {
+    "concurrently": "^3.4.0",
     "polymer-cli": "^0.17.0"
   },
   "standard": {
-    "globals": ["AppBehaviors", "Polymer"]
+    "globals": [
+      "AppBehaviors",
+      "Polymer"
+    ]
   },
   "scripts": {
     "test": "polymer test",
-    "start": "polymer serve & node server.js",
     "build": "rm -rf build && polymer build",
     "build_images": "cd images; sh convertimages.sh; cd ..;",
-    "serve": "polymer serve & node server",
-    "serve:dist": "polymer build && (polymer serve build/unbundled & node server)"
+    "serve": "concurrently \"polymer serve -p 8080\" \"node server\"",
+    "serve:dist": "polymer build && concurrently \"polymer serve build/unbundled -p 8080\" \"node server\""
   },
   "repository": {
     "type": "git",

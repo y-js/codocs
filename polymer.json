@@ -3,7 +3,7 @@
   "shell": "src/my-app.html",
   "fragments": [
     "README.md",
-    "src/doc-view-latex.html",
+    "src/doc-view-tex.html",
     "src/doc-view-richtext.html",
     "src/doc-view-markdown.html"
   ],

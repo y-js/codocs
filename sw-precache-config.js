@@ -6,7 +6,7 @@ module.exports = {
     '/yjs-webworker.js',
     '/manifest.json',
     '/fonts/fonts.css',
-    'README.md',
+    './README.md',
     '/src/global-style.css',
     '/bower_components/webcomponentsjs/webcomponents-lite.min.js'
   ],
