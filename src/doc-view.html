@@ -71,13 +71,13 @@
       observers: ['_docChanged(doc)'],
       _docChanged: function (doc) {
         // write new content
-        var view = this.$.viewContainer.querySelector(`[doctype=${doc.docType}]`)
+        var view = this.$.viewContainer.querySelector('[doctype='+doc.docType+']')
         if (Polymer.isInstance(view)) {
           this._setDocToView(view)
           this.selectedView = doc.docType
         } else {
           var self = this
-          Polymer.Base.importHref(`src/doc-view-${doc.docType}.html`, function () {
+          Polymer.Base.importHref('src/doc-view-' + doc.docType + '.html', function () {
             self._setDocToView(view)
             self.selectedView = doc.docType
           })
