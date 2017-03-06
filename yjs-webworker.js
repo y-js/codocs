@@ -10,7 +10,8 @@ ConnectorConfig = {
   url: url,
   options: {
     jsonp: false
-  }
+  },
+  generateUserId: true
 }
 
 importScripts(
