@@ -3,16 +3,17 @@
   "shell": "src/my-app.html",
   "fragments": [
     "README.md",
+    "src/landing-page.html",
     "src/doc-view-tex.html",
     "src/doc-view-richtext.html",
     "src/doc-view-markdown.html"
   ],
   "sourceGlobs": [
-   "src/**/*",
-   "images/**/*",
-   "fonts/**/*.*",
-   "bower.json",
-   "yjs-webworker.js"
+    "src/**/*",
+    "images/**/*",
+    "fonts/**/*.*",
+    "bower.json",
+    "yjs-webworker.js"
   ],
   "includeDependencies": [
     "manifest.json",
@@ -28,8 +29,6 @@
     "bower_components/KaTeX/dist/fonts/KaTeX_Main-Regular.woff2",
     "bower_components/KaTeX/dist/fonts/KaTeX_Main-Italic.woff2",
     "bower_components/pdfjs-dist/build/pdf.worker.min.js",
-    "bower_components/pdftex.js/pdftex*",
-    "bower_components/texlive-element/texlive-element.html",
-    "bower_components/pdfjs-element/pdfjs-element.html"
+    "bower_components/pdftex.js/pdftex*"
   ]
 }
