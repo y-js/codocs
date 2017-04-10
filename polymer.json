@@ -2,7 +2,6 @@
   "entrypoint": "index.html",
   "shell": "src/my-app.html",
   "fragments": [
-    "README.md",
     "src/landing-page.html",
     "src/doc-view-tex.html",
     "src/doc-view-richtext.html",
@@ -16,6 +15,7 @@
     "yjs-webworker.js"
   ],
   "includeDependencies": [
+    "README.md",
     "manifest.json",
     "fonts/fonts.css",
     "bower_components/webcomponentsjs/webcomponents-lite.min.js",
