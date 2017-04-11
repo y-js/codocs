@@ -4,6 +4,7 @@ module.exports = {
   staticFileGlobs: [
     '/index.html',
     '/images/favicon.ico',
+    '/yjs-sw.js',
     '/manifest.json',
     '/fonts/fonts.css',
     './README.md',
