@@ -32,7 +32,6 @@
     "clipboard-input": "^1.2.2",
     "yjs": "^12.1.0",
     "y-element": "^0.2.0",
-    "y-webworker": "^0.1.1",
     "paper-fab": "PolymerElements/paper-fab#^1.2.1",
     "my-icons": "dmonad/icons#^0.1.0",
     "marked-element": "PolymerElements/marked-element#^1.2.0",
@@ -44,7 +43,8 @@
     "pdfjs-element": "^0.1.0",
     "paper-dialog-scrollable": "PolymerElements/paper-dialog-scrollable#^1.1.5",
     "texlive-element": "^0.2.1",
-    "iron-ajax": "PolymerElements/iron-ajax#^1.4.3"
+    "iron-ajax": "PolymerElements/iron-ajax#^1.4.3",
+    "y-serviceworker": "^0.0.1"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

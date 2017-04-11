@@ -45,7 +45,7 @@
       }
     </style>
     <paper-card id="viewContainer" class="view-container">
-      <y-element connector-name="webworker"  connector-url="yjs-webworker.js" connector-room="{{getConnectorRoom(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="memory">
+      <y-element connector-name="serviceworker" connector-room="{{getConnectorRoom(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="memory">
         <y-type type="Richtext" name="title" data="{{title}}"></y-type>
         <y-type type="Richtext" name="content" data="{{content}}"></y-type>
       </y-element>

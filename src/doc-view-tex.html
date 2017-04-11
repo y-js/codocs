@@ -53,7 +53,7 @@
         color: red;
       }
     </style>
-    <y-element id="yElement" connector-name="webworker"  connector-url="yjs-webworker.js" connector-room="{{getConnectorRoom(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="memory">
+    <y-element id="yElement" connector-name="serviceworker" connector-room="{{getConnectorRoom(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="memory">
       <y-type type="Richtext" name="title" data="{{title}}"></y-type>
       <y-type type="Text" name="content" data="{{content}}"></y-type>
     </y-element>

@@ -12,7 +12,7 @@
     "images/**/*",
     "fonts/**/*.*",
     "bower.json",
-    "yjs-webworker.js"
+    "yjs-sw.js"
   ],
   "includeDependencies": [
     "README.md",
@@ -23,7 +23,7 @@
     "bower_components/y-memory/y-memory.js",
     "bower_components/y-indexeddb/y-indexeddb.js",
     "bower_components/y-websockets-client/y-websockets-client.js",
-    "bower_components/y-webworker/yjs-webworker-service.js",
+    "bower_components/y-serviceworker/yjs-sw-include.js",
     "bower_components/ace-builds/src-min-noconflict/mode-latex.js",
     "bower_components/ace-builds/src-min-noconflict/mode-markdown.js",
     "bower_components/KaTeX/dist/fonts/KaTeX_Main-Regular.woff2",

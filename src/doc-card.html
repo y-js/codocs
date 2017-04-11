@@ -47,7 +47,7 @@
         <clipboard-input value="{{createRoomLink(doc.docType, doc.roomId, doc.secret)}}" copy-text="Read & Edit link" title-text="Copy read & edit link"></clipboard-input>
       </paper-dialog>
       <div>
-        <y-element connected="{{shown}}" connector-url="yjs-webworker.js" connector-name="webworker" connector-room="{{getConnectorRoom(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="memory">
+        <y-element connected="{{shown}}" connector-name="serviceworker" connector-room="{{getConnectorRoom(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="memory">
           <y-type type="Richtext" name="title" data="{{title}}"></y-type>
         </y-element>
         <doc-title class="card-content" y-richtext={{title}}></doc-title>

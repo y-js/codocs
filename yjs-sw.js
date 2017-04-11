@@ -1,17 +1,18 @@
+/* eslint-env worker */
 
 var url = location.host === 'localhost:8080' ? 'localhost:1234' : 'https://codocs.dmonad.io'
 
-// Define global variables
-DBConfig = {
+// copy and modify this file
+
+self.DBConfig = {
   name: 'indexeddb'
 }
-ConnectorConfig = {
+self.ConnectorConfig = {
   name: 'websockets-client',
   url: url,
   options: {
     jsonp: false
-  },
-  generateUserId: true
+  }
 }
 
 importScripts(
@@ -19,5 +20,5 @@ importScripts(
   '/bower_components/y-memory/y-memory.js',
   '/bower_components/y-indexeddb/y-indexeddb.js',
   '/bower_components/y-websockets-client/y-websockets-client.js',
-  '/bower_components/y-webworker/yjs-webworker-service.js'
+  '/bower_components/y-serviceworker/yjs-sw-include.js'
 )

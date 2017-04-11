@@ -1,9 +1,9 @@
 
 module.exports = {
+  importScripts: ['/yjs-sw.js'],
   staticFileGlobs: [
     '/index.html',
     '/images/favicon.ico',
-    '/yjs-webworker.js',
     '/manifest.json',
     '/fonts/fonts.css',
     './README.md',
