@@ -30,7 +30,7 @@
     "y-map": "^10.0.3",
     "paper-dialog": "PolymerElements/paper-dialog#^1.1.0",
     "clipboard-input": "^1.2.2",
-    "yjs": "^12.1.0",
+    "yjs": "^12.1.7",
     "y-element": "^0.2.0",
     "paper-fab": "PolymerElements/paper-fab#^1.2.1",
     "my-icons": "dmonad/icons#^0.1.0",
