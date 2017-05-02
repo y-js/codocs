@@ -44,7 +44,7 @@
     "paper-dialog-scrollable": "PolymerElements/paper-dialog-scrollable#^1.1.5",
     "texlive-element": "^0.2.1",
     "iron-ajax": "PolymerElements/iron-ajax#^1.4.3",
-    "y-serviceworker": "^0.0.1"
+    "y-serviceworker": "^1.0.0"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
