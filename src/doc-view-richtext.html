@@ -45,8 +45,7 @@
       }
     </style>
     <paper-card id="viewContainer" class="view-container">
-      <y-element connector-name="serviceworker" connector-room="{{getConnectorRoom(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="memory">
-        <y-type type="Richtext" name="title" data="{{title}}"></y-type>
+      <y-element connector-name="serviceworker" connector-room="{{getContentRoom(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="memory">
         <y-type type="Richtext" name="content" data="{{content}}"></y-type>
       </y-element>
       <quill-element id="mainEditArea" class="doc-content" theme="bubble" read-only="{{readOnly}}" hide-tools="{{readOnly}}" y-richtext="{{content}}" placeholder="Your content!"></quill-element>

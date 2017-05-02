@@ -41,8 +41,7 @@
         bottom: 0;
       }
     </style>
-    <y-element id="yElement" connector-name="serviceworker" connector-room="{{getConnectorRoom(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="memory">
-      <y-type type="Richtext" name="title" data="{{title}}"></y-type>
+    <y-element id="yElement" connector-name="serviceworker" connector-room="{{getContentRoom(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="memory">
       <y-type type="Text" name="content" data="{{content}}"></y-type>
     </y-element>
     <vaadin-split-layout id="splitview">

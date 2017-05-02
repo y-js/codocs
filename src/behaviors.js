@@ -15,11 +15,23 @@
         }
       },
       // this is only used when creating a yjs instance in order to get the connector.room
-      getConnectorRoom: function (roomId) {
+      getContentRoom: function (roomId) {
         if (roomId != null) {
           return btoa(JSON.stringify({
             type: 'room',
             roomId: roomId
+          }))
+        } else {
+          return null
+        }
+      },
+      // this is only used when creating a yjs instance in order to get the connector.room
+      getTitleRoom: function (roomId) {
+        if (roomId != null) {
+          return btoa(JSON.stringify({
+            type: 'room',
+            roomId: roomId,
+            title: true
           }))
         } else {
           return null

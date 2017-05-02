@@ -19,6 +19,12 @@ self.ConnectorConfig = {
   socket: Y['websockets-client'].io(url, { jsonp: false })
 }
 
+/*
+self.onYjsInstanceInit = function onYjsInstanceInit (y) {
+  debugger
+}
+*/
+
 importScripts(
   '/bower_components/y-serviceworker/yjs-sw-include.js'
 )

@@ -21,10 +21,13 @@
         width: 100%;
       }
     </style>
+    <y-element connector-name="serviceworker" connector-room="{{getTitleRoom(doc.roomId)}}" connector-auth="{{doc.secret}}" db-name="memory">
+      <y-type type="Richtext" name="title" data="{{title}}"></y-type>
+    </y-element>
     <iron-pages id="viewContainer" attr-for-selected="doctype" selected="{{selectedView}}">
-      <doc-view-richtext doctype="richtext" on-title-changed="_titleChanged" read-only="{{readOnly}}" fixed-height="{{fixedHeight}}"></doc-view-richtext>
-      <doc-view-markdown doctype="markdown" on-title-changed="_titleChanged" markdown-toolbar="{{markdownToolbar}}" read-only="{{readOnly}}" fixed-height="{{fixedHeight}}"></doc-view-markdown>
-      <doc-view-latex doctype="tex" on-title-changed="_titleChanged" latex-toolbar="{{latexToolbar}}" read-only="{{readOnly}}" fixed-height="{{fixedHeight}}"></doc-view-latex>
+      <doc-view-richtext doctype="richtext" read-only="{{readOnly}}" fixed-height="{{fixedHeight}}"></doc-view-richtext>
+      <doc-view-markdown doctype="markdown" markdown-toolbar="{{markdownToolbar}}" read-only="{{readOnly}}" fixed-height="{{fixedHeight}}"></doc-view-markdown>
+      <doc-view-latex doctype="tex" latex-toolbar="{{latexToolbar}}" read-only="{{readOnly}}" fixed-height="{{fixedHeight}}"></doc-view-latex>
    </iron-pages>
   </template>
 
@@ -64,9 +67,6 @@
           type: String,
           notify: true
         }
-      },
-      _titleChanged: function (event, title){
-        this.title = title.value
       },
       observers: ['_docChanged(doc)'],
       _docChanged: function (doc) {
