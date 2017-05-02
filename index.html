@@ -88,10 +88,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // load caching service worker
         navigator.serviceWorker.register('/service-worker.js')
       }
-
-      if (window.SharedWorker == null) {
-        alert('This browser does not support SharedWorkers, and is therefore not supported! This app is tested on Chrome and Firefox for the desktop. Only Firefox is supported on mobile devices.')
-      }
     </script>
 
     <link rel="import" href="/src/my-app.html">
