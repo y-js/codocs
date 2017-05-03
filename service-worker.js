@@ -1,2 +1,2 @@
-var debug = 'codocs:*'
+var debug = false
 importScripts('/yjs-sw.js')
